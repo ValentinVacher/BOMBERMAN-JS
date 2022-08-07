@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'botw';
-    src: url(./media/font/The\ Wild\ Breath\ of\ Zelda.otf);
+    src: url(./asset/font/The\ Wild\ Breath\ of\ Zelda.otf);
 }
 html{
     background: #eee;
@@ -10,7 +10,7 @@ body{
     overflow: hidden;
 }
 canvas{
-    background: url(./media/pic/background.jpg) 50% 50% no-repeat;
+    background: url(./asset/pic/background.jpg) 50% 50% no-repeat;
     background-size: 100vw 100vh;
     width: 100vw;
     height: 100vh;
