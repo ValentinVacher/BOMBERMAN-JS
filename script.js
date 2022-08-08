@@ -84,8 +84,6 @@ play.addEventListener('click', () => {
         let frameX = linkWidth * position;
         let frameY = linkAnimation[linkState].loc[position].y;
 
-        console.log(position);
-
         ctx.drawImage(link, frameX, frameY, linkWidth, linkHeight, 0, 0, linkWidth, linkHeight);
 
         gameFrame++;
