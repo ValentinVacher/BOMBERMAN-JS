@@ -7,13 +7,10 @@ html{
 }
 body{
     margin: 0;
-    overflow: hidden;
 }
 canvas{
     background: url(./asset/pic/background.jpg) 50% 50% no-repeat;
-    background-size: 100vw 100vh;
-    width: 100vw;
-    height: 100vh;
+    background-size: 1920px 1080px;
 }
 #play, #play:active{
     transition-timing-function: ease-in-out;
@@ -22,15 +19,13 @@ canvas{
     position: absolute;
     left: 50%;
     bottom: 70%;
-    max-width: 300px;
-    max-height: 150px;
     padding: 10px;
-    width: 20%;
-    height: 10%;
+    width: 300px;
+    height: 150px;
     transform: translateX(-50%);
-    background: yellow;
+    background: #ffdc9b;
     border: none;
-    box-shadow: 0px 0px 5px 2px #000000;
+    box-shadow: 0px 0px 5px 2px #5a5127;
     font-size: 75px;
     border-radius: 10px; 
     font-weight: bold;
@@ -44,6 +39,4 @@ canvas{
 #play:active{
     transition: .05s;
     transform: scale(1) translateX(-50%);
-}
-
-    
+}   
