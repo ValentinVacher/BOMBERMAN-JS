@@ -9,12 +9,15 @@ play.addEventListener('click', () => {
     play.style.visibility = 'hidden';
     canvas.style.background = '#eee';
 
-    let link = new Image();
+    launchGame();
+});
 
+function launchGame() {
     const linkWidth = 120;
     const linkHeight = 130;
     const staggerFrame = 5;
 
+    let link = new Image();
     let gameFrame = 0;
     let linkState = 'walkRight';
 
@@ -79,16 +82,16 @@ play.addEventListener('click', () => {
 
     function animate(){
         ctx.clearRect(0, 0, 1920, 1080);
-
+    
         let position = Math.floor(gameFrame/staggerFrame) % linkAnimation[linkState].loc.length;
         let frameX = linkWidth * position;
         let frameY = linkAnimation[linkState].loc[position].y;
-
+    
         ctx.drawImage(link, frameX, frameY, linkWidth, linkHeight, 0, 0, linkWidth, linkHeight);
-
+    
         gameFrame++;
         requestAnimationFrame(animate);
     }
 
     animate();
-});
+}
