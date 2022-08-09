@@ -15,16 +15,32 @@ window.addEventListener('load', function() {
             constructor(game) {
                 this.game = game;
                 window.addEventListener('keydown', e => {
-                    ((e.key === 'z' || e.key === 's' || e.key === 'q' || e.key === 'd') && this.game.keys.indexOf(e.key) === -1) ? this.game.keys.push(e.key) : '';
-
-                    console.log(this.game.keys);
+                    ((e.key === 'z' || e.key === 's' || e.key === 'q' || e.key === 'd') && this.game.keys.indexOf(e.key) === -1) ? this.game.keys.push(e.key) : (e.key === ' ') ? this.game.player.setBomb() : '';
                 });
 
                 window.addEventListener('keyup', e => {
                     this.game.keys.indexOf(e.key) > -1 ? this.game.keys.splice(this.game.keys.indexOf(e.key), 1) : '';
-
-                    console.log(this.game.keys);
                 });
+            }
+        }
+
+        class Bomb {
+            constructor(game, x, y) {
+                this.game = game;
+                this.x = x;
+                this.y = y;
+                this.width = 150;
+                this.height = 150;
+                this.markeForDeletion = false;
+            }
+
+            update() {
+
+            }
+
+            draw(context) {
+                context.fillStyle = 'yellow';
+                context.fillRect(this.x, this.y, this.width, this.height)
             }
         }
 
@@ -41,7 +57,9 @@ window.addEventListener('load', function() {
                 this.y = y;
                 this.speedX = 0;
                 this.speedY = 0;
-                this.maxSpeed = 5;
+                this.maxSpeed = 10;
+                this.bombs = [];
+                this.ammo = 1
             }
 
             update() {
@@ -51,10 +69,27 @@ window.addEventListener('load', function() {
 
                 this.x += this.speedX;
                 this.y += this.speedY
+
+                // handle bomb
+                this.bombs.forEach(bomb => {
+                    bomb.update();
+                });
+
+                this.bombs = this.bombs.filter(bomb => !bomb.markeForDeletion)
             }
 
             draw(context){
+                this.bombs.forEach(bomb => {
+                    bomb.draw(context);
+                });
+
+                context.fillStyle = 'green';
                 context.fillRect(this.x, this.y, this.width, this.height)
+            }
+
+            setBomb() {
+                this.ammo > 0 ? (this.bombs.push(new Bomb(this.game, this.x - 15, this.y - 10)),
+                this.ammo--) : '' ;
             }
         }
 
