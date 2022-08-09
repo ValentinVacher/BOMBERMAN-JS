@@ -15,11 +15,21 @@ window.addEventListener('load', function() {
             constructor(game) {
                 this.game = game;
                 window.addEventListener('keydown', e => {
-                    ((e.key === 'z' || e.key === 's' || e.key === 'q' || e.key === 'd') && this.game.keys.indexOf(e.key) === -1) ? this.game.keys.push(e.key) : (e.key === ' ') ? this.game.player.setBomb() : '';
+                    if((    e.key === 'z' || 
+                            e.key === 's' || 
+                            e.key === 'q' || 
+                            e.key === 'd') && 
+                            this.game.keys.indexOf(e.key) === -1) {
+                                this.game.keys.push(e.key)
+                            }else if(e.key === ' '){
+                                this.game.player.setBomb()
+                            }
                 });
 
                 window.addEventListener('keyup', e => {
-                    this.game.keys.indexOf(e.key) > -1 ? this.game.keys.splice(this.game.keys.indexOf(e.key), 1) : '';
+                    if(this.game.keys.indexOf(e.key) > -1){
+                        this.game.keys.splice(this.game.keys.indexOf(e.key), 1)
+                    }
                 });
             }
         }
@@ -69,9 +79,22 @@ window.addEventListener('load', function() {
             }
 
             update(deltaTime) {
-                this.game.keys.includes('z') ? this.speedY = -this.maxSpeed : (this.game.keys.includes('s') ? this.speedY = this.maxSpeed : this.speedY = 0);
 
-                this.game.keys.includes('q') ? this.speedX = -this.maxSpeed : (this.game.keys.includes('d') ? this.speedX = this.maxSpeed : this.speedX = 0);
+                if(this.game.keys.includes('z')){
+                    this.speedY = -this.maxSpeed
+                } else if(this.game.keys.includes('s')){
+                    this.speedY = this.maxSpeed
+                } else{
+                    this.speedY = 0
+                }
+
+                if(this.game.keys.includes('q')){
+                    this.speedX = -this.maxSpeed
+                } else if(this.game.keys.includes('d')){
+                    this.speedX = this.maxSpeed
+                } else{
+                    this.speedX = 0
+                }
 
                 this.x += this.speedX;
                 this.y += this.speedY
@@ -98,8 +121,10 @@ window.addEventListener('load', function() {
             }
 
             setBomb() {
-                this.maxBomb > 0 ? (this.bombs.push(new Bomb(this.game, this.x - 15, this.y - 10)),
-                this.maxBomb--) : '' ;
+                if(this.maxBomb > 0){
+                    this.bombs.push(new Bomb(this.game, this.x - 15, this.y - 10));
+                    this.maxBomb--
+                }
             }
         }
 
