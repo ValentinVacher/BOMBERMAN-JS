@@ -12,7 +12,20 @@ window.addEventListener('load', function() {
         canvas.style.background = '#eee';
 
         class InputHandler {
+            constructor(game) {
+                this.game = game;
+                window.addEventListener('keydown', e => {
+                    ((e.key === 'z' || e.key === 's' || e.key === 'q' || e.key === 'd') && this.game.keys.indexOf(e.key) === -1) ? this.game.keys.push(e.key) : '';
 
+                    console.log(this.game.keys);
+                });
+
+                window.addEventListener('keyup', e => {
+                    this.game.keys.indexOf(e.key) > -1 ? this.game.keys.splice(this.game.keys.indexOf(e.key), 1) : '';
+
+                    console.log(this.game.keys);
+                });
+            }
         }
 
         class Particle {
@@ -28,9 +41,14 @@ window.addEventListener('load', function() {
                 this.y = y;
                 this.speedX = 0;
                 this.speedY = 0;
+                this.maxSpeed = 5;
             }
 
             update() {
+                this.game.keys.includes('z') ? this.speedY = -this.maxSpeed : (this.game.keys.includes('s') ? this.speedY = this.maxSpeed : this.speedY = 0);
+
+                this.game.keys.includes('q') ? this.speedX = -this.maxSpeed : (this.game.keys.includes('d') ? this.speedX = this.maxSpeed : this.speedX = 0);
+
                 this.x += this.speedX;
                 this.y += this.speedY
             }
@@ -53,6 +71,8 @@ window.addEventListener('load', function() {
                 this.width = width;
                 this.height = height;
                 this.player = new Player(this, 0, 0);
+                this.input = new InputHandler(this);
+                this.keys = [];
             }
 
             update() {
@@ -76,4 +96,4 @@ window.addEventListener('load', function() {
 
         animate();
     });
-})
+});
