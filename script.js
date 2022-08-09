@@ -32,10 +32,16 @@ window.addEventListener('load', function() {
                 this.width = 150;
                 this.height = 150;
                 this.markeForDeletion = false;
+                this.timer = 0
+                this.duration = 3000
             }
 
-            update() {
-
+            update(deltaTime) {
+                if(this.timer >= this.duration){
+                    this.markeForDeletion = true;
+                } else {
+                    this.timer += deltaTime;
+                }
             }
 
             draw(context) {
@@ -59,10 +65,10 @@ window.addEventListener('load', function() {
                 this.speedY = 0;
                 this.maxSpeed = 10;
                 this.bombs = [];
-                this.ammo = 1
+                this.maxBomb = 1
             }
 
-            update() {
+            update(deltaTime) {
                 this.game.keys.includes('z') ? this.speedY = -this.maxSpeed : (this.game.keys.includes('s') ? this.speedY = this.maxSpeed : this.speedY = 0);
 
                 this.game.keys.includes('q') ? this.speedX = -this.maxSpeed : (this.game.keys.includes('d') ? this.speedX = this.maxSpeed : this.speedX = 0);
@@ -72,10 +78,14 @@ window.addEventListener('load', function() {
 
                 // handle bomb
                 this.bombs.forEach(bomb => {
-                    bomb.update();
+                    bomb.update(deltaTime);
+                    if(bomb.markeForDeletion === true){
+                        this.maxBomb++;
+                    }
                 });
 
                 this.bombs = this.bombs.filter(bomb => !bomb.markeForDeletion)
+                this.maxBombTimer += deltaTime
             }
 
             draw(context){
@@ -88,8 +98,8 @@ window.addEventListener('load', function() {
             }
 
             setBomb() {
-                this.ammo > 0 ? (this.bombs.push(new Bomb(this.game, this.x - 15, this.y - 10)),
-                this.ammo--) : '' ;
+                this.maxBomb > 0 ? (this.bombs.push(new Bomb(this.game, this.x - 15, this.y - 10)),
+                this.maxBomb--) : '' ;
             }
         }
 
@@ -110,8 +120,8 @@ window.addEventListener('load', function() {
                 this.keys = [];
             }
 
-            update() {
-                this.player.update();
+            update(deltaTime) {
+                this.player.update(deltaTime);
             }
 
             draw(context) {
@@ -121,14 +131,22 @@ window.addEventListener('load', function() {
 
         const game = new Game(canvas.width, canvas.height);
 
+        let lastTime = 0;
+
         // animation loop
-        function animate() {
+        function animate(timeStamp) {
+            const deltaTime = timeStamp - lastTime;
+
+            lastTime = timeStamp;
+
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            game.update();
+
+            game.update(deltaTime);
             game.draw(ctx);
+
             requestAnimationFrame(animate);
         }
 
-        animate();
+        animate(0);
     });
 });
