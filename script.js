@@ -1,16 +1,16 @@
-const canvas = document.getElementById('bomberman');
-const play = document.getElementById('play');
-const ctx = canvas.getContext('2d');
+window.addEventListener('load', function() {
+    const canvas = document.getElementById('bomberman');
+    const play = document.getElementById('play');
+    const ctx = canvas.getContext('2d');
 
-canvas.width = 1920;
-canvas.height = 1080;
+    canvas.width = 1920;
+    canvas.height = 1080;
 
-play.addEventListener('click', () => {
-    play.style.transition = '0s'
-    play.style.visibility = 'hidden';
-    canvas.style.background = '#eee';
+    play.addEventListener('click', () => {
+        play.style.transition = '0s'
+        play.style.visibility = 'hidden';
+        canvas.style.background = '#eee';
 
-    window.addEventListener('load', () => {
         class InputHandler {
 
         }
@@ -56,7 +56,7 @@ play.addEventListener('click', () => {
             }
 
             update() {
-                this.Player.update();
+                this.player.update();
             }
 
             draw(context) {
@@ -65,5 +65,15 @@ play.addEventListener('click', () => {
         }
 
         const game = new Game(canvas.width, canvas.height);
-    })
-});
+
+        // animation loop
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            game.update();
+            game.draw(ctx);
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    });
+})
