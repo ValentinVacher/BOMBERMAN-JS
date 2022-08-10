@@ -75,7 +75,7 @@ window.addEventListener('load', function() {
                 this.speedY = 0;
                 this.maxSpeed = 10;
                 this.bombs = [];
-                this.maxBomb = 1
+                this.maxBomb = 5
             }
 
             update(deltaTime) {
@@ -133,7 +133,20 @@ window.addEventListener('load', function() {
         }
 
         class UI {
+            constructor(game) {
+                this.game = game;
+                this.fontSize = 25;
+                this.fontFamily = 'botw';
+                this.color = "yellow";
+            }
 
+            draw(context){
+                // bomb
+                context.fillStyle = this.color;
+                for (let i = 0; i < this.game.player.maxBomb; i++){
+                    context.fillRect(50 + 60 * i, 50, 50, 50);
+                }
+            }
         }
 
         class Game {
@@ -142,6 +155,7 @@ window.addEventListener('load', function() {
                 this.height = height;
                 this.player = new Player(this, 0, 0);
                 this.input = new InputHandler(this);
+                this.ui = new UI(this);
                 this.keys = [];
             }
 
@@ -151,6 +165,7 @@ window.addEventListener('load', function() {
 
             draw(context) {
                 this.player.draw(context);
+                this.ui.draw(context);
             }
         }
 
