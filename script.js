@@ -132,6 +132,22 @@ window.addEventListener('load', function() {
 
         }
 
+        class Border {
+            constructor(game) {
+                this.game = game;
+                this.vertical = 60;
+                this.horizontal = 15;
+            }
+
+            draw(context) {
+                context.fillStyle = "black";
+                context.fillRect(0, 0, this.vertical, this.game.height);
+                context.fillRect(this.game.width - this.vertical, 0, this.vertical, this.game.height);
+                context.fillRect(0, 0, this.game.width, this.horizontal);
+                context.fillRect(0, this.game.height - this.horizontal, this.game.width, this.horizontal);
+            };
+        }
+
         class UI {
             constructor(game) {
                 this.game = game;
@@ -144,7 +160,7 @@ window.addEventListener('load', function() {
                 // bomb
                 context.fillStyle = this.color;
                 for (let i = 0; i < this.game.player.maxBomb; i++){
-                    context.fillRect(50 + 60 * i, 50, 50, 50);
+                    context.fillRect(70 + 60 * i, 25, 50, 50);
                 }
             }
         }
@@ -153,7 +169,8 @@ window.addEventListener('load', function() {
             constructor(width, height) {
                 this.width = width;
                 this.height = height;
-                this.player = new Player(this, 0, 0);
+                this.border = new Border(this);
+                this.player = new Player(this, 60, 15);
                 this.input = new InputHandler(this);
                 this.ui = new UI(this);
                 this.keys = [];
@@ -164,6 +181,7 @@ window.addEventListener('load', function() {
             }
 
             draw(context) {
+                this.border.draw(context)
                 this.player.draw(context);
                 this.ui.draw(context);
             }
