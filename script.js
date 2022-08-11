@@ -75,29 +75,33 @@ window.addEventListener('load', function() {
                 this.speedY = 0;
                 this.maxSpeed = 10;
                 this.bombs = [];
-                this.maxBomb = 5
+                this.maxBomb = 5;
             }
 
             update(deltaTime) {
 
-                if(this.game.keys.includes('z')){
-                    this.speedY = -this.maxSpeed
-                } else if(this.game.keys.includes('s')){
-                    this.speedY = this.maxSpeed
+                if( this.game.keys.includes('z') &&
+                    this.y > this.game.border.horizontal){
+                    this.speedY = -this.maxSpeed;
+                } else if(  this.game.keys.includes('s') &&
+                            this.y + this.height < this.game.height - this.game.border.horizontal){
+                    this.speedY = this.maxSpeed;
                 } else{
-                    this.speedY = 0
+                    this.speedY = 0;
                 }
 
-                if(this.game.keys.includes('q')){
-                    this.speedX = -this.maxSpeed
-                } else if(this.game.keys.includes('d')){
-                    this.speedX = this.maxSpeed
+                if( this.game.keys.includes('q') &&
+                    this.x > this.game.border.vertical){
+                    this.speedX = -this.maxSpeed;
+                } else if(  this.game.keys.includes('d') &&
+                            this.x + this.width < this.game.width - this.game.border.vertical){
+                    this.speedX = this.maxSpeed;
                 } else{
-                    this.speedX = 0
+                    this.speedX = 0;
                 }
 
                 this.x += this.speedX;
-                this.y += this.speedY
+                this.y += this.speedY;
 
                 // handle bomb
                 this.bombs.forEach(bomb => {
@@ -107,8 +111,8 @@ window.addEventListener('load', function() {
                     }
                 });
 
-                this.bombs = this.bombs.filter(bomb => !bomb.markeForDeletion)
-                this.maxBombTimer += deltaTime
+                this.bombs = this.bombs.filter(bomb => !bomb.markeForDeletion);
+                this.maxBombTimer += deltaTime;
             }
 
             draw(context){
@@ -117,13 +121,13 @@ window.addEventListener('load', function() {
                 });
 
                 context.fillStyle = 'green';
-                context.fillRect(this.x, this.y, this.width, this.height)
+                context.fillRect(this.x, this.y, this.width, this.height);
             }
 
             setBomb() {
                 if(this.maxBomb > 0){
                     this.bombs.push(new Bomb(this.game, this.x - 15, this.y - 10));
-                    this.maxBomb--
+                    this.maxBomb--;
                 }
             }
         }
@@ -200,14 +204,18 @@ window.addEventListener('load', function() {
 
             update(deltaTime) {
                 this.player.update(deltaTime);
-                
+                this.wall.forEach(wall => {
+                    if(this.checkCollision(this.player, wall)) {
+                        this.player.x--;
+                    }
+                });
             }
 
             draw(context) {
                 this.border.draw(context)
                 this.wall.forEach(wall => {
                     wall.draw(context)
-                })
+                });
                 this.player.draw(context);
                 this.ui.draw(context);
             }
@@ -219,10 +227,18 @@ window.addEventListener('load', function() {
                     }
                 }
             }
+
+            checkCollision(rect1, rect2){
+                return( rect1.x < rect2.x + rect2.width && 
+                        rect1.x + rect1.width > rect2.x &&
+                        rect1.y < rect2.y + rect2.height &&
+                        rect1.height + rect1.y > rect2.y)
+            }
         }
 
         const game = new Game(canvas.width, canvas.height);
         game.addGreyWall();
+        console.log(game.wall);
 
         let lastTime = 0;
 
