@@ -14,19 +14,19 @@ canvas{
     background: url(./asset/pic/background.jpg) 50% 50% no-repeat;
     background-size: 1920px 1080px;
     border: 5px solid red;
-    max-width: 100%;
     max-height: 100%;
+    max-width: 100%;
 }
 #play, #play:active{
     transition-timing-function: ease-in-out;
 }
 #play{
     position: absolute;
-    left: 50%;
-    bottom: 70%;
+    left: 960px;
+    bottom: 80%;
     padding: 10px;
     width: 300px;
-    height: 150px;
+    height: 100px;
     transform: translateX(-50%);
     background: #ffdc9b;
     border: none;
@@ -45,3 +45,8 @@ canvas{
     transition: .05s;
     transform: scale(1) translateX(-50%);
 }   
+@media screen and (max-width: 1920px){
+    #play{
+        left: 50%;
+    }
+}
