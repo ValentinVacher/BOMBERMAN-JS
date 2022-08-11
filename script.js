@@ -101,7 +101,32 @@ window.addEventListener('load', function() {
                 }
 
                 this.x += this.speedX;
+
+                let collisionX = false;
+
+                this.game.walls.forEach(wall => {
+                    if(this.game.checkCollision(this, wall)) {
+                        collisionX = true;
+                    }
+                });
+
+                if(collisionX) {
+                    this.x -= this.speedX;
+                }
+
                 this.y += this.speedY;
+
+                let collisionY = false;
+
+                this.game.walls.forEach(wall => {
+                    if(this.game.checkCollision(this, wall)) {
+                        collisionY = true;
+                    }
+                });
+
+                if(collisionY) {
+                    this.y -= this.speedY;
+                }
 
                 // handle bomb
                 this.bombs.forEach(bomb => {
@@ -199,21 +224,16 @@ window.addEventListener('load', function() {
                 this.input = new InputHandler(this);
                 this.ui = new UI(this);
                 this.keys = [];
-                this.wall = [];
+                this.walls = [];
             }
 
             update(deltaTime) {
                 this.player.update(deltaTime);
-                this.wall.forEach(wall => {
-                    if(this.checkCollision(this.player, wall)) {
-                        this.player.x--;
-                    }
-                });
             }
 
             draw(context) {
                 this.border.draw(context)
-                this.wall.forEach(wall => {
+                this.walls.forEach(wall => {
                     wall.draw(context)
                 });
                 this.player.draw(context);
@@ -223,7 +243,7 @@ window.addEventListener('load', function() {
             addGreyWall() {
                 for(let i = 0; i < 5; i++) {
                     for(let j = 0; j < 3; j++) {
-                        this.wall.push(new GreyWall(this, this.border.vertical + 150 + 300 * i, this.border.horizontal + 150 + 300 * j));
+                        this.walls.push(new GreyWall(this, this.border.vertical + 150 + 300 * i, this.border.horizontal + 150 + 300 * j));
                     }
                 }
             }
@@ -238,7 +258,6 @@ window.addEventListener('load', function() {
 
         const game = new Game(canvas.width, canvas.height);
         game.addGreyWall();
-        console.log(game.wall);
 
         let lastTime = 0;
 
