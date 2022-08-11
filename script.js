@@ -128,6 +128,27 @@ window.addEventListener('load', function() {
             }
         }
 
+        class Wall {
+            constructor(game) {
+                this.game = game;
+                this.width = 150;
+                this.height = 150;
+            }
+
+            draw(context){
+                context.fillStyle = 'grey'
+                context.fillRect(this.x, this.y, this.width, this.height)
+            }
+        }
+
+        class GreyWall extends Wall {
+            constructor (game, x, y){
+                super(game);
+                this.x = x;
+                this.y = y;
+            }
+        }
+
         class Background {
 
         }
@@ -135,7 +156,7 @@ window.addEventListener('load', function() {
         class Border {
             constructor(game) {
                 this.game = game;
-                this.vertical = 60;
+                this.vertical = 135;
                 this.horizontal = 15;
             }
 
@@ -160,7 +181,7 @@ window.addEventListener('load', function() {
                 // bomb
                 context.fillStyle = this.color;
                 for (let i = 0; i < this.game.player.maxBomb; i++){
-                    context.fillRect(70 + 60 * i, 25, 50, 50);
+                    context.fillRect(this.game.border.vertical + 10 + 60 * i, this.game.border.horizontal + 10, 50, 50);
                 }
             }
         }
@@ -170,24 +191,38 @@ window.addEventListener('load', function() {
                 this.width = width;
                 this.height = height;
                 this.border = new Border(this);
-                this.player = new Player(this, 60, 15);
+                this.player = new Player(this, this.border.vertical, this.border.horizontal);
                 this.input = new InputHandler(this);
                 this.ui = new UI(this);
                 this.keys = [];
+                this.wall = [];
             }
 
             update(deltaTime) {
                 this.player.update(deltaTime);
+                
             }
 
             draw(context) {
                 this.border.draw(context)
+                this.wall.forEach(wall => {
+                    wall.draw(context)
+                })
                 this.player.draw(context);
                 this.ui.draw(context);
+            }
+
+            addGreyWall() {
+                for(let i = 0; i < 5; i++) {
+                    for(let j = 0; j < 3; j++) {
+                        this.wall.push(new GreyWall(this, this.border.vertical + 150 + 300 * i, this.border.horizontal + 150 + 300 * j));
+                    }
+                }
             }
         }
 
         const game = new Game(canvas.width, canvas.height);
+        game.addGreyWall();
 
         let lastTime = 0;
 
