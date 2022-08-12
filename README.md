@@ -5,6 +5,12 @@ My goal is to redo my __[Bomberman game](https://github.com/ValentinVacher/BOMBE
 ## Play :
 
 Click __[her](https://valentinvacher.github.io/BOMBERMAN-JS/)__ to play.
+## symbols signification :
+
+- Green rectangle = player
+- Yellow rectangle = bomb
+- Little yellow rectangle = bomb remaining
+- Grey rectangle = indestructible wall
 ## Rules :
 
 - A yellow rectangle can only appear once every three seconds. 
