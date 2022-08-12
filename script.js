@@ -45,8 +45,9 @@ window.addEventListener('load', function() {
                 this.width = 150;
                 this.height = 150;
                 this.markeForDeletion = false;
-                this.timer = 0
-                this.duration = 3000
+                this.timer = 0;
+                this.duration = 3000;
+                this.tangible = true;
             }
 
             update(deltaTime) {
@@ -55,11 +56,16 @@ window.addEventListener('load', function() {
                 } else {
                     this.timer += deltaTime;
                 }
+
+                if( this.tangible &&
+                    !this.game.checkCollision(this, this.game.player)){
+                        this.tangible = false;
+                    }
             }
 
             draw(context) {
                 context.fillStyle = 'yellow';
-                context.fillRect(this.x, this.y, this.width, this.height)
+                context.fillRect(this.x, this.y, this.width, this.height);
             }
         }
 
@@ -103,6 +109,7 @@ window.addEventListener('load', function() {
                     this.speedX = 0;
                 }
 
+                // colision X
                 this.x += this.speedX;
 
                 let collisionX = false;
@@ -113,10 +120,20 @@ window.addEventListener('load', function() {
                     }
                 });
 
+                if(!collisionX){
+                    this.bombs.forEach(bomb => {
+                        if(!bomb.tangible && this.game.checkCollision(this, bomb)) {
+                            collisionX = true;
+                        }
+                    });
+                }
+
+
                 if(collisionX) {
                     this.x -= this.speedX;
                 }
 
+                // colision Y
                 this.y += this.speedY;
 
                 let collisionY = false;
@@ -126,6 +143,14 @@ window.addEventListener('load', function() {
                         collisionY = true;
                     }
                 });
+
+                if(!collisionY){
+                    this.bombs.forEach(bomb => {
+                        if(!bomb.tangible && this.game.checkCollision(this, bomb)) {
+                            collisionY = true;
+                        }
+                    });
+                }
 
                 if(collisionY) {
                     this.y -= this.speedY;
