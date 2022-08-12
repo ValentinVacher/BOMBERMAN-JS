@@ -8,18 +8,21 @@
     box-sizing:  border-box;
     overflow: hidden;
 }
-html{
-    background: #000;
+body{
+    background: url(./asset/pic/background.jpg) no-repeat;
+    background-size: 1920px;
 }
 canvas{
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translateX(-50%) translateY(-50%);
-    background: url(./asset/pic/background.jpg) 50% 50% no-repeat;
+    visibility: hidden;
     background-size: 1920px 1080px;
     height: 1080px;
     width: 1920px;
+    max-width: 100%;
+    max-height: 100%;
 }
 #play, #play:active{
     transition-timing-function: ease-in-out;
@@ -54,5 +57,10 @@ canvas{
     canvas{
         width: 1600px;
         height: 900px;
+    }
+}
+@media screen and (min-width: 1920px){
+    body{
+        background-size: 2560px;
     }
 }

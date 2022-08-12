@@ -1,4 +1,5 @@
 window.addEventListener('load', function() {
+    const body = document.getElementById('background');
     const canvas = document.getElementById('bomberman');
     const play = document.getElementById('play');
     const ctx = canvas.getContext('2d');
@@ -9,7 +10,9 @@ window.addEventListener('load', function() {
     play.addEventListener('click', () => {
         play.style.transition = '0s'
         play.style.visibility = 'hidden';
+        body.style.background = '#000'
         canvas.style.background = '#eee';
+        canvas.style.visibility = 'visible';
 
         class InputHandler {
             constructor(game) {
