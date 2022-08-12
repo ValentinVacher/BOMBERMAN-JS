@@ -154,7 +154,7 @@ window.addEventListener('load', function() {
 
             setBomb() {
                 if(this.maxBomb > 0){
-                    this.bombs.push(new Bomb(this.game, this.x - 15, this.y - 10));
+                    this.bombs.push(new Bomb(this.game,Math.floor((this.x - 60) / 150) * 150 + this.game.border.vertical, Math.floor((this.y + 65) / 150) * 150 + this.game.border.horizontal));
                     this.maxBomb--;
                 }
             }
