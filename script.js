@@ -179,8 +179,21 @@ window.addEventListener('load', function() {
 
             setBomb() {
                 if(this.maxBomb > 0){
-                    this.bombs.push(new Bomb(this.game,Math.floor((this.x - 60) / 150) * 150 + this.game.border.vertical, Math.floor((this.y + 65) / 150) * 150 + this.game.border.horizontal));
-                    this.maxBomb--;
+                    let x = Math.floor((this.x - 60) / 150) * 150 + this.game.border.vertical;
+                    let y = Math.floor((this.y + 65) / 150) * 150 + this.game.border.horizontal;
+                    let setBomb = true;
+
+                    this.bombs.forEach(bomb  => {
+                        if( x === bomb. x &&
+                            y === bomb.y){
+                                setBomb = false;
+                            }
+                    })
+
+                    if(setBomb){
+                        this.bombs.push(new Bomb(this.game, x, y));
+                        this.maxBomb--;
+                    }   
                 }
             }
         }
