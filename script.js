@@ -47,7 +47,7 @@ window.addEventListener('load', function() {
                 this.markeForDeletion = false;
                 this.timer = 0;
                 this.duration = 3000;
-                this.tangible = true;
+                this.tangible = false;
             }
 
             update(deltaTime) {
@@ -57,9 +57,9 @@ window.addEventListener('load', function() {
                     this.timer += deltaTime;
                 }
 
-                if( this.tangible &&
+                if( !this.tangible &&
                     !this.game.checkCollision(this, this.game.player)){
-                        this.tangible = false;
+                        this.tangible = true;
                     }
             }
 
@@ -122,7 +122,7 @@ window.addEventListener('load', function() {
 
                 if(!collisionX){
                     this.bombs.forEach(bomb => {
-                        if(!bomb.tangible && this.game.checkCollision(this, bomb)) {
+                        if(bomb.tangible && this.game.checkCollision(this, bomb)) {
                             collisionX = true;
                         }
                     });
@@ -146,7 +146,7 @@ window.addEventListener('load', function() {
 
                 if(!collisionY){
                     this.bombs.forEach(bomb => {
-                        if(!bomb.tangible && this.game.checkCollision(this, bomb)) {
+                        if(bomb.tangible && this.game.checkCollision(this, bomb)) {
                             collisionY = true;
                         }
                     });
