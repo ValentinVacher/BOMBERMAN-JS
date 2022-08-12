@@ -6,24 +6,28 @@
     margin: 0;
     padding: 0;
     box-sizing:  border-box;
+    overflow: hidden;
 }
 html{
-    background: #eee;
+    background: #000;
 }
 canvas{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
     background: url(./asset/pic/background.jpg) 50% 50% no-repeat;
     background-size: 1920px 1080px;
-    border: 5px solid red;
-    max-height: 100%;
-    max-width: 100%;
+    height: 1080px;
+    width: 1920px;
 }
 #play, #play:active{
     transition-timing-function: ease-in-out;
 }
 #play{
     position: absolute;
-    left: 960px;
-    bottom: 80%;
+    left: 50%;
+    top: 30%;
     padding: 10px;
     width: 300px;
     height: 100px;
@@ -37,6 +41,7 @@ canvas{
     font-family: 'botw', sans-serif;
     letter-spacing: 10px;
     transition: .5s; 
+    z-index: 10;
 }
 #play:hover{
     transform: scale(1.1) translateX(-45%);
@@ -46,7 +51,8 @@ canvas{
     transform: scale(1) translateX(-50%);
 }   
 @media screen and (max-width: 1920px){
-    #play{
-        left: 50%;
+    canvas{
+        width: 1600px;
+        height: 900px;
     }
 }
