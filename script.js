@@ -8,9 +8,9 @@ window.addEventListener('load', function() {
     canvas.height = 1080;
 
     play.addEventListener('click', () => {
-        play.style.transition = '0s'
+        play.style.transition = '0s';
         play.style.visibility = 'hidden';
-        body.style.background = '#000'
+        body.style.background = '#000';
         canvas.style.background = '#eee';
         canvas.style.visibility = 'visible';
 
@@ -23,15 +23,15 @@ window.addEventListener('load', function() {
                             e.key === 'q' || 
                             e.key === 'd') && 
                             this.game.keys.indexOf(e.key) === -1) {
-                                this.game.keys.push(e.key)
+                                this.game.keys.push(e.key);
                             }else if(e.key === ' '){
-                                this.game.player.setBomb()
+                                this.game.player.setBomb();
                             }
                 });
 
                 window.addEventListener('keyup', e => {
                     if(this.game.keys.indexOf(e.key) > -1){
-                        this.game.keys.splice(this.game.keys.indexOf(e.key), 1)
+                        this.game.keys.splice(this.game.keys.indexOf(e.key), 1);
                     }
                 });
             }
@@ -45,27 +45,33 @@ window.addEventListener('load', function() {
                 this.y = y;
                 this.width = 150;
                 this.height = 150;
-                this.markeForDeletion = false
+                this.markeForDeletion = false;
             }
 
             update(){
                 if( this.x < this.game.border.vertical ||
-                    this.x > this.game.width - this.game.border.vertical ||
+                    this.x == this.game.width - this.game.border.vertical ||
                     this.y < this.game.border.horizontal ||
-                    this.y > this.game.height - this.game.border.horizontal){
-                        this.markeForDeletion = true
+                    this.y == this.game.height - this.game.border.horizontal){
+                        this.markeForDeletion = true;
                     }
 
                 this.game.walls.forEach(wall => {
                     if(this.game.checkCollision(this, wall)){
-                        this.markeForDeletion = true
+                        this.markeForDeletion = true;
+                    }
+                });
+
+                this.game.player.bombs.forEach(bomb => {
+                    if(this.game.checkCollision(this, bomb)) {
+                        bomb.timer = 2500;
                     }
                 });
             }
 
             draw(context){
                 context.fillStyle = 'orange';
-                context.fillRect(this.x, this.y, this.width, this.height)
+                context.fillRect(this.x, this.y, this.width, this.height);
             }
         }
 
@@ -208,7 +214,7 @@ window.addEventListener('load', function() {
             }
 
             checkCollision() {
-                let collision = false
+                let collision = false;
 
                 this.game.walls.forEach(wall => {
                     if(this.game.checkCollision(this, wall)) {
@@ -258,8 +264,8 @@ window.addEventListener('load', function() {
             }
 
             draw(context){
-                context.fillStyle = 'grey'
-                context.fillRect(this.x, this.y, this.width, this.height)
+                context.fillStyle = 'grey';
+                context.fillRect(this.x, this.y, this.width, this.height);
             }
         }
 
@@ -325,9 +331,9 @@ window.addEventListener('load', function() {
             }
 
             draw(context) {
-                this.border.draw(context)
+                this.border.draw(context);
                 this.walls.forEach(wall => {
-                    wall.draw(context)
+                    wall.draw(context);
                 });
                 this.player.draw(context);
                 this.ui.draw(context);

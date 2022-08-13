@@ -16,6 +16,7 @@ Click __[her](https://valentinvacher.github.io/BOMBERMAN-JS/)__ to play.
 
 - A bomb explodes after 2.5 seconds.
 - A explosion remains 0.5 seconds.
+- A bomb can detonate another
 - There cannot be more than five bombs.
 - It is impossible to place two bombs in the same place.
 ## Controle :
