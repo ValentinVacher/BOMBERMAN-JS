@@ -288,7 +288,7 @@ window.addEventListener('load', function() {
             }
 
             draw(context){
-                context.fillStyle = 'grey';
+                context.fillStyle = this.color;
                 context.fillRect(this.x, this.y, this.width, this.height);
             }
         }
@@ -298,6 +298,16 @@ window.addEventListener('load', function() {
                 super(game);
                 this.x = x;
                 this.y = y;
+                this.color = 'grey';
+            }
+        }
+
+        class BrownWall extends Wall {
+            constructor(game, x, y) {
+                super(game);
+                this.x = x;
+                this.y = y
+                this.color = 'brown';
             }
         }
 
@@ -348,6 +358,7 @@ window.addEventListener('load', function() {
                 this.ui = new UI(this);
                 this.keys = [];
                 this.walls = [];
+                this.nbBrownWall = 40;
             }
 
             update(deltaTime) {
@@ -371,6 +382,32 @@ window.addEventListener('load', function() {
                 }
             }
 
+            addBrownWall() {
+                let replace = true;
+                for(let i = 0; i < 40; i++){
+                    let brownWall = new BrownWall(this, Math.floor(Math.random() * 11) * 150 + this.border.vertical, Math.floor(Math.random() * 7) * 150 + this.border.horizontal);
+                    
+                    replace = true;
+
+                    while(replace){
+                        replace = false;
+
+                        this.walls.forEach(wall => {
+                            if(this.checkCollision(wall, brownWall)){
+                                replace = true;
+                            }
+                        })
+
+                        if(replace){
+                            brownWall = new BrownWall(this, Math.floor(Math.random() * 11) * 150 + this.border.vertical, Math.floor(Math.random() * 7) * 150 + this.border.horizontal);
+                        }
+                    }
+
+                    this.walls.push(brownWall);
+                }
+
+            }
+
             checkCollision(rect1, rect2){
                 return( rect1.x < rect2.x + rect2.width && 
                         rect1.x + rect1.width > rect2.x &&
@@ -381,6 +418,7 @@ window.addEventListener('load', function() {
 
         const game = new Game(canvas.width, canvas.height);
         game.addGreyWall();
+        game.addBrownWall();
 
         let lastTime = 0;
 
