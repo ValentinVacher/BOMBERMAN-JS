@@ -9,14 +9,16 @@ Click __[her](https://valentinvacher.github.io/BOMBERMAN-JS/)__ to play.
 
 - Green rectangle = player
 - Yellow rectangle = bomb
+- Orange rectangle = explosion
 - Little yellow rectangle = bomb remaining
 - Grey rectangle = indestructible wall
 ## Rules :
 
-- A yellow rectangle can only appear once every three seconds. 
-- There cannot be more than five yellow rectangles.
+- A bomb explodes after 2.5 seconds.
+- A explosion remains 0.5 seconds.
+- There cannot be more than five bombs.
 - It is impossible to place two bombs in the same place.
 ## Controle :
 
-- ZQSD : move the green rectangle
-- SPACBAR : make a yellow rectangle appear under the green rectangle
+- ZQSD : move the player
+- SPACBAR : make a bomb appear under the player

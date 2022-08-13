@@ -37,6 +37,38 @@ window.addEventListener('load', function() {
             }
         }
 
+        class Explosion {
+            constructor(game, bomb, x, y){
+                this.game = game;
+                this.bomb = bomb;
+                this.x = x;
+                this.y = y;
+                this.width = 150;
+                this.height = 150;
+                this.markeForDeletion = false
+            }
+
+            update(){
+                if( this.x < this.game.border.vertical ||
+                    this.x > this.game.width - this.game.border.vertical ||
+                    this.y < this.game.border.horizontal ||
+                    this.y > this.game.height - this.game.border.horizontal){
+                        this.markeForDeletion = true
+                    }
+
+                this.game.walls.forEach(wall => {
+                    if(this.game.checkCollision(this, wall)){
+                        this.markeForDeletion = true
+                    }
+                });
+            }
+
+            draw(context){
+                context.fillStyle = 'orange';
+                context.fillRect(this.x, this.y, this.width, this.height)
+            }
+        }
+
         class Bomb {
             constructor(game, x, y) {
                 this.game = game;
@@ -46,11 +78,24 @@ window.addEventListener('load', function() {
                 this.height = 150;
                 this.markeForDeletion = false;
                 this.timer = 0;
+                this.explosionTime = 2500;
+                this.explosions = [];
+                this.explosion = false;
                 this.duration = 3000;
                 this.tangible = false;
             }
 
             update(deltaTime) {
+                if( this.timer >= this.explosionTime &&
+                    !this.explosion){
+                        this.explosion = true;
+                        this.explosions.push(new Explosion(this.game, this, this.x, this.y), new Explosion(this.game, this, this.x + 150, this.y), new Explosion(this.game, this, this.x - 150, this.y), new Explosion(this.game, this, this.x, this.y + 150), new Explosion(this.game, this, this.x, this.y - 150));
+                        this.explosions.forEach(explosion => {
+                            explosion.update();
+                        });
+                        this.explosions = this.explosions.filter(explosion => !explosion.markeForDeletion);
+                    }
+
                 if(this.timer >= this.duration){
                     this.markeForDeletion = true;
                 } else {
@@ -64,8 +109,16 @@ window.addEventListener('load', function() {
             }
 
             draw(context) {
-                context.fillStyle = 'yellow';
-                context.fillRect(this.x, this.y, this.width, this.height);
+                if(this.timer < this.explosionTime &&
+                    !this.explosion) {
+                    context.fillStyle = 'yellow';
+                    context.fillRect(this.x, this.y, this.width, this.height);
+                    } else{
+                        this.explosions.forEach(explosion => {
+                            explosion.draw(context);
+                        })
+                    }
+                
             }
         }
 
@@ -122,7 +175,9 @@ window.addEventListener('load', function() {
 
                 if(!collisionX){
                     this.bombs.forEach(bomb => {
-                        if(bomb.tangible && this.game.checkCollision(this, bomb)) {
+                        if( bomb.tangible && 
+                            bomb.timer < bomb.explosion && 
+                            this.game.checkCollision(this, bomb)) {
                             collisionX = true;
                         }
                     });
@@ -146,7 +201,9 @@ window.addEventListener('load', function() {
 
                 if(!collisionY){
                     this.bombs.forEach(bomb => {
-                        if(bomb.tangible && this.game.checkCollision(this, bomb)) {
+                        if( bomb.tangible && 
+                            bomb.timer < bomb.explosion && 
+                            this.game.checkCollision(this, bomb)) {
                             collisionY = true;
                         }
                     });
