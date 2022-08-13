@@ -95,7 +95,12 @@ window.addEventListener('load', function() {
                 if( this.timer >= this.explosionTime &&
                     !this.explosion){
                         this.explosion = true;
-                        this.explosions.push(new Explosion(this.game, this, this.x, this.y), new Explosion(this.game, this, this.x + 150, this.y), new Explosion(this.game, this, this.x - 150, this.y), new Explosion(this.game, this, this.x, this.y + 150), new Explosion(this.game, this, this.x, this.y - 150));
+                        this.explosions.push(   new Explosion(this.game, this, this.x, this.y), 
+                                                new Explosion(this.game, this, this.x + 150, this.y), 
+                                                new Explosion(this.game, this, this.x - 150, this.y), 
+                                                new Explosion(this.game, this, this.x, this.y + 150), 
+                                                new Explosion(this.game, this, this.x, this.y - 150));
+
                         this.explosions.forEach(explosion => {
                             explosion.update();
                         });
@@ -148,27 +153,46 @@ window.addEventListener('load', function() {
 
             update(deltaTime) {
                 if( this.game.keys.includes('z') &&
-                    this.y > this.game.border.horizontal){
-                    this.speedY = -this.maxSpeed;
-                } else if(  this.game.keys.includes('s') &&
-                            this.y + this.height < this.game.height - this.game.border.horizontal){
-                    this.speedY = this.maxSpeed;
-                } else{
-                    this.speedY = 0;
-                }
+                    this.game.keys.includes('s')) {
+                        this.speedY = 0;
+                    } else if( this.game.keys.includes('z') &&
+                        this.y > this.game.border.horizontal){
+                            this.speedY = -this.maxSpeed;
+
+                            while(this.y + this.speedY < this.game.border.horizontal) {
+                                this.speedY++;
+                            }
+                        } else if(  this.game.keys.includes('s') &&
+                                    this.y + this.height < this.game.height - this.game.border.horizontal){
+                                        this.speedY = this.maxSpeed;
+
+                                        while(this.y + this.height + this.speedY > this.game.height - this.game.border.horizontal) {
+                                            this.speedY--;
+                                        }
+                                    } else{
+                                        this.speedY = 0;
+                                    }
 
                 if( this.game.keys.includes('q') &&
-                    this.x > this.game.border.vertical){
-                    this.speedX = -this.maxSpeed;
-                } else if(  this.game.keys.includes('d') &&
-                            this.x + this.width < this.game.width - this.game.border.vertical){
-                    this.speedX = this.maxSpeed;
-                } else{
-                    this.speedX = 0;
-                }
+                    this.game.keys.includes('d')) {
+                        this.speedX = 0;
+                    } else if( this.game.keys.includes('q') &&
+                        this.x > this.game.border.vertical){
+                            this.speedX = -this.maxSpeed;
 
-                
-                
+                            while(this.x + this.speedX < this.game.border.vertical) {
+                                this.speedX++;
+                            }
+                            } else if(  this.game.keys.includes('d') &&
+                                        this.x + this.width < this.game.width - this.game.border.vertical){
+                                            this.speedX = this.maxSpeed;
+
+                                            while(this.x + this.width + this.speedX > this.game.width - this.game.border.vertical) {
+                                                this.speedX--;
+                                            }
+                                        } else{
+                                            this.speedX = 0;
+                                        }
 
                 // colision X
                 if(this.speedX != 0){
