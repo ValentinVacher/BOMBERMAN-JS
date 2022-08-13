@@ -141,7 +141,6 @@ window.addEventListener('load', function() {
             }
 
             update(deltaTime) {
-
                 if( this.game.keys.includes('z') &&
                     this.y > this.game.border.horizontal){
                     this.speedY = -this.maxSpeed;
@@ -162,55 +161,29 @@ window.addEventListener('load', function() {
                     this.speedX = 0;
                 }
 
+                
+                
+
                 // colision X
-                this.x += this.speedX;
+                if(this.speedX != 0){
+                    this.x += this.speedX;
 
-                let collisionX = false;
+                    let collisionX = this.checkCollision();
 
-                this.game.walls.forEach(wall => {
-                    if(this.game.checkCollision(this, wall)) {
-                        collisionX = true;
+                    if(collisionX) {
+                        this.x -= this.speedX;
                     }
-                });
-
-                if(!collisionX){
-                    this.bombs.forEach(bomb => {
-                        if( bomb.tangible && 
-                            bomb.timer < bomb.explosion && 
-                            this.game.checkCollision(this, bomb)) {
-                            collisionX = true;
-                        }
-                    });
-                }
-
-
-                if(collisionX) {
-                    this.x -= this.speedX;
                 }
 
                 // colision Y
-                this.y += this.speedY;
+                if(this.speedY != 0){
+                    this.y += this.speedY;
 
-                let collisionY = false;
+                    let collisionY = this.checkCollision();
 
-                this.game.walls.forEach(wall => {
-                    if(this.game.checkCollision(this, wall)) {
-                        collisionY = true;
+                    if(collisionY) {
+                        this.y -= this.speedY;
                     }
-                });
-
-                if(!collisionY){
-                    this.bombs.forEach(bomb => {
-                        if( bomb.tangible && 
-                            bomb.timer < bomb.explosion && 
-                            this.game.checkCollision(this, bomb)) {
-                            collisionY = true;
-                        }
-                    });
-                }
-
-                if(collisionY) {
-                    this.y -= this.speedY;
                 }
 
                 // handle bomb
@@ -232,6 +205,28 @@ window.addEventListener('load', function() {
 
                 context.fillStyle = 'green';
                 context.fillRect(this.x, this.y, this.width, this.height);
+            }
+
+            checkCollision() {
+                let collision = false
+
+                this.game.walls.forEach(wall => {
+                    if(this.game.checkCollision(this, wall)) {
+                        collision = true;
+                    }
+                });
+
+                if(!collision){
+                    this.bombs.forEach(bomb => {
+                        if( bomb.tangible && 
+                            bomb.timer < bomb.explosionTime && 
+                            this.game.checkCollision(this, bomb)) {
+                                collision = true;
+                            }
+                    });
+                }
+
+                return collision;
             }
 
             setBomb() {
