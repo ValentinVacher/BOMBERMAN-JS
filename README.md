@@ -23,6 +23,7 @@ Click __[her](https://valentinvacher.github.io/BOMBERMAN-JS/)__ to play.
 - Forty brown wall are randomly generated
 - Brown walls can't spawn in the corners
 - Bombs destroy brown walls
+- The player starts with a score of five
 ## Controle :
 
 - ZQSD : move the player

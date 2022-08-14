@@ -132,8 +132,7 @@ window.addEventListener('load', function() {
                         this.explosions.forEach(explosion => {
                             explosion.draw(context);
                         })
-                    }
-                
+                    }   
             }
         }
 
@@ -153,6 +152,7 @@ window.addEventListener('load', function() {
                 this.maxSpeed = 10;
                 this.bombs = [];
                 this.maxBomb = 5;
+                this.score = 5;
             }
 
             update(deltaTime) {
@@ -331,19 +331,31 @@ window.addEventListener('load', function() {
         }
 
         class UI {
-            constructor(game) {
+            constructor(game, player) {
                 this.game = game;
+                this.player = player;
                 this.fontSize = 25;
-                this.fontFamily = 'botw';
-                this.color = "yellow";
+                this.fontFamily = 'sans-serif';
             }
 
             draw(context){
+                context.save();
+                context.fillStyle = 'black';
+                context.shadowOffsetX = 1;
+                context.shadowOffsetY = 1;
+                context.shadowColor = 'black'
+                context.font = this.fontSize + 'px ' + this.fontFamily;
+
+                // score
+                context.fillText('Score: ' + this.player.score, this.game.border.vertical + 10, this.game.border.horizontal + 20);
+
                 // bomb
-                context.fillStyle = this.color;
+                context.fillStyle = "yellow";
                 for (let i = 0; i < this.game.player.maxBomb; i++){
-                    context.fillRect(this.game.border.vertical + 10 + 60 * i, this.game.border.horizontal + 10, 50, 50);
+                    context.fillRect(this.game.border.vertical + 10 + 60 * i, this.game.border.horizontal + 30, 50, 50);
                 }
+
+                context.restore();
             }
         }
 
@@ -354,7 +366,7 @@ window.addEventListener('load', function() {
                 this.border = new Border(this);
                 this.player = new Player(this, this.border.vertical, this.border.horizontal);
                 this.input = new InputHandler(this);
-                this.ui = new UI(this);
+                this.ui = new UI(this, this.player);
                 this.keys = [];
                 this.walls = [];
                 this.nbBrownWall = 40;
@@ -409,7 +421,6 @@ window.addEventListener('load', function() {
 
                     this.walls.push(brownWall);
                 }
-
             }
 
             checkCollision(rect1, rect2){
