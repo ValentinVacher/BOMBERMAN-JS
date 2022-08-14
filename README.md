@@ -30,7 +30,7 @@ Click __[her](https://valentinvacher.github.io/BOMBERMAN-JS/)__ to play.
 - Destroying a wall earns ten points.
 - Destroying two wall with one bomb earns thirty points.
 - Destroying three wall with one bomb earns sixty points.
-## Controle:
+## Controles:
 
 - ZQSD : move the player
 - SPACBAR : make a bomb appear under the player
