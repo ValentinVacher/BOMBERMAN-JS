@@ -152,47 +152,41 @@ window.addEventListener('load', function() {
             }
 
             update(deltaTime) {
-                if( this.game.keys.includes('z') &&
-                    this.game.keys.includes('s')) {
-                        this.speedY = 0;
-                    } else if( this.game.keys.includes('z') &&
-                        this.y > this.game.border.horizontal){
-                            this.speedY = -this.maxSpeed;
+                if(this.game.keys.includes('z') && this.game.keys.includes('s')) {
+                    this.speedY = 0;
+                } else if(this.game.keys.includes('z') && this.y > this.game.border.horizontal){
+                    this.speedY = -this.maxSpeed;
 
-                            while(this.y + this.speedY < this.game.border.horizontal) {
-                                this.speedY++;
-                            }
-                        } else if(  this.game.keys.includes('s') &&
-                                    this.y + this.height < this.game.height - this.game.border.horizontal){
-                                        this.speedY = this.maxSpeed;
+                     while(this.y + this.speedY < this.game.border.horizontal) {
+                        this.speedY++;
+                    }
+                } else if(this.game.keys.includes('s') && this.y + this.height < this.game.height - this.game.border.horizontal){
+                    this.speedY = this.maxSpeed;
 
-                                        while(this.y + this.height + this.speedY > this.game.height - this.game.border.horizontal) {
-                                            this.speedY--;
-                                        }
-                                    } else{
-                                        this.speedY = 0;
-                                    }
+                    while(this.y + this.height + this.speedY > this.game.height - this.game.border.horizontal) {
+                        this.speedY--;
+                    }
+                } else{
+                    this.speedY = 0;
+                }
 
-                if( this.game.keys.includes('q') &&
-                    this.game.keys.includes('d')) {
+                if(this.game.keys.includes('q') && this.game.keys.includes('d')) {
                         this.speedX = 0;
-                    } else if( this.game.keys.includes('q') &&
-                        this.x > this.game.border.vertical){
-                            this.speedX = -this.maxSpeed;
+                } else if(  this.game.keys.includes('q') && this.x > this.game.border.vertical){
+                    this.speedX = -this.maxSpeed;
 
-                            while(this.x + this.speedX < this.game.border.vertical) {
-                                this.speedX++;
-                            }
-                            } else if(  this.game.keys.includes('d') &&
-                                        this.x + this.width < this.game.width - this.game.border.vertical){
-                                            this.speedX = this.maxSpeed;
+                    while(this.x + this.speedX < this.game.border.vertical) {
+                        this.speedX++;
+                    }
+                } else if(  this.game.keys.includes('d') && this.x + this.width < this.game.width - this.game.border.vertical){
+                    this.speedX = this.maxSpeed;
 
-                                            while(this.x + this.width + this.speedX > this.game.width - this.game.border.vertical) {
-                                                this.speedX--;
-                                            }
-                                        } else{
-                                            this.speedX = 0;
-                                        }
+                    while(this.x + this.width + this.speedX > this.game.width - this.game.border.vertical) {
+                        this.speedX--;
+                    }
+                } else{
+                    this.speedX = 0;
+                }
 
                 // colision X
                 if(this.speedX != 0){
@@ -383,7 +377,7 @@ window.addEventListener('load', function() {
             }
 
             addBrownWall() {
-                let replace = true;
+                let replace;
                 for(let i = 0; i < 40; i++){
                     let brownWall = new BrownWall(this, Math.floor(Math.random() * 11) * 150 + this.border.vertical, Math.floor(Math.random() * 7) * 150 + this.border.horizontal);
                     
@@ -398,9 +392,12 @@ window.addEventListener('load', function() {
                             }
                         })
 
-                        if(replace){
-                            brownWall = new BrownWall(this, Math.floor(Math.random() * 11) * 150 + this.border.vertical, Math.floor(Math.random() * 7) * 150 + this.border.horizontal);
-                        }
+                        if( replace || 
+                            ((brownWall.y == this.border.horizontal || brownWall.y == 900 + this.border.horizontal) && (brownWall.x < 300 + this.border.vertical || brownWall.x > 1200 + this.border.vertical)) ||
+                            ((brownWall.y == 150 + this.border.horizontal || brownWall.y == 750 + this.border.horizontal) && (brownWall.x == this.border.vertical || brownWall.x == 1500 + this.border.vertical))){
+                                brownWall = new BrownWall(this, Math.floor(Math.random() * 11) * 150 + this.border.vertical, Math.floor(Math.random() * 7) * 150 + this.border.horizontal);
+                                replace = true
+                            }
                     }
 
                     this.walls.push(brownWall);
