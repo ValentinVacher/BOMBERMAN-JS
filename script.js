@@ -62,6 +62,7 @@ window.addEventListener('load', function() {
                             this.markeForDeletion = true;
                         } else{
                             wall.markeForDeletion = true;
+                            this.bomb.destroyedWall++;
                         }       
                     }
                 });
@@ -80,8 +81,9 @@ window.addEventListener('load', function() {
         }
 
         class Bomb {
-            constructor(game, x, y) {
+            constructor(game, player, x, y) {
                 this.game = game;
+                this.player = player;
                 this.x = x;
                 this.y = y;
                 this.width = 150;
@@ -93,6 +95,7 @@ window.addEventListener('load', function() {
                 this.explosion = false;
                 this.duration = 3000;
                 this.tangible = false;
+                this.destroyedWall = 0;
             }
 
             update(deltaTime) {
@@ -219,6 +222,9 @@ window.addEventListener('load', function() {
                     bomb.update(deltaTime);
                     if(bomb.markeForDeletion === true){
                         this.maxBomb++;
+                        for(let i = 1; i <= bomb.destroyedWall; i++){
+                            this.score += i * 10
+                        }
                     }
                 });
 
@@ -271,8 +277,9 @@ window.addEventListener('load', function() {
                     })
 
                     if(setBomb){
-                        this.bombs.push(new Bomb(this.game, x, y));
+                        this.bombs.push(new Bomb(this.game, this, x, y));
                         this.maxBomb--;
+                        this.score -= 5;
                     }   
                 }
             }
@@ -347,7 +354,7 @@ window.addEventListener('load', function() {
                 context.font = this.fontSize + 'px ' + this.fontFamily;
 
                 // score
-                context.fillText('Score: ' + this.player.score, this.game.border.vertical + 10, this.game.border.horizontal + 20);
+                context.fillText('Score: ' + this.player.score, this.game.border.vertical + 10, this.game.border.horizontal + 25);
 
                 // bomb
                 context.fillStyle = "yellow";
