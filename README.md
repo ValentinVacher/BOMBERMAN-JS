@@ -22,6 +22,7 @@ Click __[her](https://valentinvacher.github.io/BOMBERMAN-JS/)__ to play.
 - It is impossible to place two bombs in the same place.
 - Forty brown wall are randomly generated
 - Brown walls can't spawn in the corners
+- Bombs destroy brown walls
 ## Controle :
 
 - ZQSD : move the player

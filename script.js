@@ -58,7 +58,11 @@ window.addEventListener('load', function() {
 
                 this.game.walls.forEach(wall => {
                     if(this.game.checkCollision(this, wall)){
-                        this.markeForDeletion = true;
+                        if(wall.color === 'grey') {
+                            this.markeForDeletion = true;
+                        } else{
+                            wall.markeForDeletion = true;
+                        }       
                     }
                 });
 
@@ -302,6 +306,7 @@ window.addEventListener('load', function() {
                 this.x = x;
                 this.y = y
                 this.color = 'brown';
+                this.markeForDeletion = false;
             }
         }
 
@@ -357,6 +362,8 @@ window.addEventListener('load', function() {
 
             update(deltaTime) {
                 this.player.update(deltaTime);
+
+                this.walls = this.walls.filter(wall => !wall.markeForDeletion);
             }
 
             draw(context) {
