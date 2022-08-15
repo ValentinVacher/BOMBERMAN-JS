@@ -31,7 +31,7 @@ Click __[her](https://valentinvacher.github.io/BOMBERMAN-JS/)__ to play.
 - Destroying a wall earns ten points.
 - Destroying two wall with one bomb earns thirty points.
 - Destroying three wall with one bomb earns sixty points.
-## lose condition:
+## Lose condition:
 
 - If a player has a negative score, he loses the game.
 - If an explosion hits a player, he loses the game.
