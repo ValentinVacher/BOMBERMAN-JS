@@ -7,7 +7,8 @@ My goal is to redo my __[Bomberman game](https://github.com/ValentinVacher/BOMBE
 Click __[her](https://valentinvacher.github.io/BOMBERMAN-JS/)__ to play.
 ## symbols signification:
 
-- Green rectangle = player
+- Green rectangle = player one
+- Red rectangle = player two
 - Yellow rectangle = bomb
 - Orange rectangle = explosion
 - Little yellow rectangle = bomb remaining
@@ -32,5 +33,7 @@ Click __[her](https://valentinvacher.github.io/BOMBERMAN-JS/)__ to play.
 - Destroying three wall with one bomb earns sixty points.
 ## Controles:
 
-- ZQSD : move the player
-- SPACBAR : make a bomb appear under the player
+- ZQSD : move the player one
+- SPACBAR : make a bomb appear under the player one
+- DIRECTIONNAL ARROW : move th plater two
+- CONTROL : make a bomb appear under the player two
