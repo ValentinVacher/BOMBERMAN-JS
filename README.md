@@ -25,6 +25,7 @@ Click __[her](https://valentinvacher.github.io/BOMBERMAN-JS/)__ to play.
 - Brown walls can't spawn in the corners.
 - Bombs destroy brown walls.
 - The player starts with a score of five.
+- If a player has a negative score, he loses the game.
 ## Score:
 
 - Planting a bomb costs five points.

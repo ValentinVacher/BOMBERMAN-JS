@@ -167,6 +167,7 @@ window.addEventListener('load', function() {
                 this.inputBomb = inputBomb;
                 this.color = color
                 this.ui = new UI(this.game, this);
+                this.win = false;
             }
 
             update(deltaTime) {
@@ -208,6 +209,11 @@ window.addEventListener('load', function() {
 
                 if(this.game.keys.includes(this.inputBomb)) {
                     this.setBomb();
+                    this.game.keys = this.game.keys.filter(key => {
+                        if(key != this.inputBomb) {
+                            return key;
+                        }
+                    })
                 }
 
                 // colision X
@@ -348,9 +354,6 @@ window.addEventListener('load', function() {
             draw(context){
                 context.save();
                 context.fillStyle = 'black';
-                context.shadowOffsetX = 1;
-                context.shadowOffsetY = 1;
-                context.shadowColor = 'black'
                 context.font = this.fontSize + 'px ' + this.fontFamily;
 
                 let x;
@@ -368,6 +371,9 @@ window.addEventListener('load', function() {
                 context.fillText('Score: ' + this.player.score, x, y);
 
                 // bomb
+                context.shadowOffsetX = 2;
+                context.shadowOffsetY = 2;
+                context.shadowColor = 'black';
                 context.fillStyle = "yellow";
                 for (let i = 0; i < this.player.maxBomb; i++){
                     context.fillRect(x + 60 * i, y + 5, 50, 50);
@@ -389,25 +395,36 @@ window.addEventListener('load', function() {
                 this.walls = [];
                 this.nbBrownWall = 40;
                 this.bombs = [];
+                this.gameOver = false
             }
 
             update(deltaTime) {
-                this.greenPlayer.update(deltaTime);
-                this.redPlayer.update(deltaTime);
+                if(!this.greenPlayer.win && !this.redPlayer.win){
+                    this.greenPlayer.update(deltaTime);
+                    this.redPlayer.update(deltaTime);
 
-                // handle bomb
-                this.bombs.forEach(bomb => {
-                    bomb.update(deltaTime);
-                    if(bomb.markeForDeletion === true){
-                        bomb.player.maxBomb++;
-                        for(let i = 1; i <= bomb.destroyedWall; i++){
-                            bomb.player.score += i * 10
+                    // handle bomb
+                    this.bombs.forEach(bomb => {
+                        bomb.update(deltaTime);
+                        if(bomb.markeForDeletion === true){
+                            bomb.player.maxBomb++;
+                            for(let i = 1; i <= bomb.destroyedWall; i++){
+                                bomb.player.score += i * 10
+                            }
                         }
-                    }
-                });
+                    });
 
-                this.walls = this.walls.filter(wall => !wall.markeForDeletion);
-                this.bombs = this.bombs.filter(bomb => !bomb.markeForDeletion);
+                    this.walls = this.walls.filter(wall => !wall.markeForDeletion);
+                    this.bombs = this.bombs.filter(bomb => !bomb.markeForDeletion);
+
+                    if(this.greenPlayer.score < 0) {
+                        this.redPlayer.win = true;
+                        this.gameOver = true;
+                    }else if(this.redPlayer.score < 0) {
+                        this.greenPlayer.win = true;
+                        this.gameOver = true;
+                    }
+                }
             }
 
             draw(context) {
@@ -420,6 +437,25 @@ window.addEventListener('load', function() {
                 });
                 this.greenPlayer.draw(context);
                 this.redPlayer.draw(context);
+
+                if(this.gameOver){
+                    context.save();
+                    context.shadowOffsetX = 2;
+                    context.shadowOffsetY = 2;
+                    context.shadowColor = 'black';
+                    context.textAlign = 'center';
+                    context.font = '100px botw'
+
+                    if(this.greenPlayer.win){
+                        context.fillStyle = 'green';
+                        context.fillText('VICTOIRE DU JOUEUR VERT', this.width / 2, this.height / 2);
+                    } else {
+                        context.fillStyle = 'red';
+                        context.fillText('VICTOIRE DU JOUEUR ROUGE', this.width / 2, this.height / 2);
+                    }
+
+                    context.restore();
+                }
             }
 
             addGreyWall() {
