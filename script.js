@@ -76,6 +76,17 @@ window.addEventListener('load', function() {
                         bomb.timer = 2500;
                     }
                 });
+
+                if(this.game.checkCollision(this, this.game.greenPlayer)){
+                    this.game.redPlayer.win = true;
+                    this.game.redPlayer.killedBy = this.bomb.player;
+                    this.game.gameOver = true;
+                }
+                if(this.game.checkCollision(this, this.game.redPlayer)) {
+                    this.game.greenPlayer.win = true;
+                    this.game.greenPlayer.killedBy = this.bomb.player;
+                    this.game.gameOver = true;
+                }   
             }
 
             draw(context){
@@ -168,6 +179,7 @@ window.addEventListener('load', function() {
                 this.color = color
                 this.ui = new UI(this.game, this);
                 this.win = false;
+                this.killedBy;
             }
 
             update(deltaTime) {
@@ -423,6 +435,14 @@ window.addEventListener('load', function() {
                     }else if(this.redPlayer.score < 0) {
                         this.greenPlayer.win = true;
                         this.gameOver = true;
+                    }
+                }
+
+                if(this.greenPlayer.win && this.redPlayer.win){
+                    if(this.greenPlayer.killedBy === this.greenPlayer) {
+                        this.greenPlayer.win = false;
+                    } else {
+                        this.redPlayer.win = false;
                     }
                 }
             }
