@@ -27,7 +27,7 @@ window.addEventListener('load', function() {
                             e.key === 'ArrowDown' ||
                             e.key === 'ArrowLeft' ||
                             e.key === 'ArrowRight' ||
-                            e.key === 'Control') && 
+                            e.key === '0') && 
                             this.game.keys.indexOf(e.key) === -1) {
                                 this.game.keys.push(e.key);
                             }
@@ -71,7 +71,7 @@ window.addEventListener('load', function() {
                     }
                 });
 
-                this.bomb.player.bombs.forEach(bomb => {
+                this.game.bombs.forEach(bomb => {
                     if(this.game.checkCollision(this, bomb)) {
                         bomb.timer = 2500;
                     }
@@ -125,7 +125,8 @@ window.addEventListener('load', function() {
                 }
 
                 if( !this.tangible &&
-                    !this.game.checkCollision(this, this.player)){
+                    !this.game.checkCollision(this, this.game.greenPlayer) &&
+                    !this.game.checkCollision(this, this.game.redPlayer)){
                         this.tangible = true;
                     }
             }
@@ -157,7 +158,6 @@ window.addEventListener('load', function() {
                 this.speedX = 0;
                 this.speedY = 0;
                 this.maxSpeed = 10;
-                this.bombs = [];
                 this.maxBomb = 5;
                 this.score = 5;
                 this.up = up;
@@ -213,7 +213,7 @@ window.addEventListener('load', function() {
                 if(this.speedX != 0){
                     this.x += this.speedX;
 
-                    let collisionX = this.checkCollision();
+                    let collisionX = this.checkBombCollision();
 
                     if(collisionX) {
                         this.x -= this.speedX;
@@ -224,38 +224,23 @@ window.addEventListener('load', function() {
                 if(this.speedY != 0){
                     this.y += this.speedY;
 
-                    let collisionY = this.checkCollision();
+                    let collisionY = this.checkBombCollision();
 
                     if(collisionY) {
                         this.y -= this.speedY;
                     }
                 }
 
-                // handle bomb
-                this.bombs.forEach(bomb => {
-                    bomb.update(deltaTime);
-                    if(bomb.markeForDeletion === true){
-                        this.maxBomb++;
-                        for(let i = 1; i <= bomb.destroyedWall; i++){
-                            this.score += i * 10
-                        }
-                    }
-                });
-
-                this.bombs = this.bombs.filter(bomb => !bomb.markeForDeletion);
                 this.maxBombTimer += deltaTime;
             }
 
             draw(context){
-                this.bombs.forEach(bomb => {
-                    bomb.draw(context);
-                });
 
                 context.fillStyle = this.color;
                 context.fillRect(this.x, this.y, this.width, this.height);
             }
 
-            checkCollision() {
+            checkBombCollision() {
                 let collision = false;
 
                 this.game.walls.forEach(wall => {
@@ -265,7 +250,7 @@ window.addEventListener('load', function() {
                 });
 
                 if(!collision){
-                    this.bombs.forEach(bomb => {
+                    this.game.bombs.forEach(bomb => {
                         if( bomb.tangible && 
                             bomb.timer < bomb.explosionTime && 
                             this.game.checkCollision(this, bomb)) {
@@ -283,7 +268,7 @@ window.addEventListener('load', function() {
                     let y = Math.floor((this.y + 65) / 150) * 150 + this.game.border.horizontal;
                     let setBomb = true;
 
-                    this.bombs.forEach(bomb  => {
+                    this.game.bombs.forEach(bomb  => {
                         if( x === bomb. x &&
                             y === bomb.y){
                                 setBomb = false;
@@ -291,7 +276,7 @@ window.addEventListener('load', function() {
                     })
 
                     if(setBomb){
-                        this.bombs.push(new Bomb(this.game, this, x, y));
+                        this.game.bombs.push(new Bomb(this.game, this, x, y));
                         this.maxBomb--;
                         this.score -= 5;
                     }   
@@ -386,25 +371,41 @@ window.addEventListener('load', function() {
                 this.height = height;
                 this.border = new Border(this);
                 this.greenPlayer = new Player(this, this.border.vertical, this.border.horizontal, 'z', 's', 'q', 'd', ' ', 'green');
-                this.redPlayer = new Player(this, this.width - this.border.vertical - 120, this.height - this.border.horizontal - 130, 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Control', 'red')
+                this.redPlayer = new Player(this, this.width - this.border.vertical - 120, this.height - this.border.horizontal - 130, 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', '0', 'red')
                 this.input = new InputHandler(this);
                 this.ui = new UI(this, this.greenPlayer);
                 this.keys = [];
                 this.walls = [];
                 this.nbBrownWall = 40;
+                this.bombs = [];
             }
 
             update(deltaTime) {
                 this.greenPlayer.update(deltaTime);
                 this.redPlayer.update(deltaTime);
 
+                // handle bomb
+                this.bombs.forEach(bomb => {
+                    bomb.update(deltaTime);
+                    if(bomb.markeForDeletion === true){
+                        bomb.player.maxBomb++;
+                        for(let i = 1; i <= bomb.destroyedWall; i++){
+                            bomb.player.score += i * 10
+                        }
+                    }
+                });
+
                 this.walls = this.walls.filter(wall => !wall.markeForDeletion);
+                this.bombs = this.bombs.filter(bomb => !bomb.markeForDeletion);
             }
 
             draw(context) {
                 this.border.draw(context);
                 this.walls.forEach(wall => {
                     wall.draw(context);
+                });
+                this.bombs.forEach(bomb => {
+                    bomb.draw(context);
                 });
                 this.greenPlayer.draw(context);
                 this.redPlayer.draw(context);
