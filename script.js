@@ -166,6 +166,7 @@ window.addEventListener('load', function() {
                 this.left = left;
                 this.inputBomb = inputBomb;
                 this.color = color
+                this.ui = new UI(this.game, this);
             }
 
             update(deltaTime) {
@@ -213,7 +214,7 @@ window.addEventListener('load', function() {
                 if(this.speedX != 0){
                     this.x += this.speedX;
 
-                    let collisionX = this.checkBombCollision();
+                    let collisionX = this.checkPlayerCollision();
 
                     if(collisionX) {
                         this.x -= this.speedX;
@@ -224,7 +225,7 @@ window.addEventListener('load', function() {
                 if(this.speedY != 0){
                     this.y += this.speedY;
 
-                    let collisionY = this.checkBombCollision();
+                    let collisionY = this.checkPlayerCollision();
 
                     if(collisionY) {
                         this.y -= this.speedY;
@@ -235,12 +236,12 @@ window.addEventListener('load', function() {
             }
 
             draw(context){
-
                 context.fillStyle = this.color;
                 context.fillRect(this.x, this.y, this.width, this.height);
+                this.ui.draw(context)
             }
 
-            checkBombCollision() {
+            checkPlayerCollision() {
                 let collision = false;
 
                 this.game.walls.forEach(wall => {
@@ -352,13 +353,24 @@ window.addEventListener('load', function() {
                 context.shadowColor = 'black'
                 context.font = this.fontSize + 'px ' + this.fontFamily;
 
+                let x;
+                let y;
+
+                if(this.player.color === 'green'){
+                    x = this.game.border.vertical + 10;
+                    y = this.game.border.horizontal + 25
+                }else {
+                    x = this.game.width - this.game.border.vertical - 300;
+                    y = this.game.height - this.game.border.horizontal - 60;
+                }
+
                 // score
-                context.fillText('Score: ' + this.player.score, this.game.border.vertical + 10, this.game.border.horizontal + 25);
+                context.fillText('Score: ' + this.player.score, x, y);
 
                 // bomb
                 context.fillStyle = "yellow";
                 for (let i = 0; i < this.player.maxBomb; i++){
-                    context.fillRect(this.game.border.vertical + 10 + 60 * i, this.game.border.horizontal + 30, 50, 50);
+                    context.fillRect(x + 60 * i, y + 5, 50, 50);
                 }
 
                 context.restore();
@@ -373,7 +385,6 @@ window.addEventListener('load', function() {
                 this.greenPlayer = new Player(this, this.border.vertical, this.border.horizontal, 'z', 's', 'q', 'd', ' ', 'green');
                 this.redPlayer = new Player(this, this.width - this.border.vertical - 120, this.height - this.border.horizontal - 130, 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', '0', 'red')
                 this.input = new InputHandler(this);
-                this.ui = new UI(this, this.greenPlayer);
                 this.keys = [];
                 this.walls = [];
                 this.nbBrownWall = 40;
@@ -409,7 +420,6 @@ window.addEventListener('load', function() {
                 });
                 this.greenPlayer.draw(context);
                 this.redPlayer.draw(context);
-                this.ui.draw(context);
             }
 
             addGreyWall() {
