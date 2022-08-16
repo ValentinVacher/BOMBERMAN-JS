@@ -25,6 +25,9 @@ Click __[her](https://valentinvacher.github.io/BOMBERMAN-JS/)__ to play.
 - Brown walls can't spawn in the corners.
 - Bombs destroy brown walls.
 - The player starts with a score of five.
+- If all the brown walls are destroyed, a 30 second timer starts.
+- At the end of the timer the winner is the player with the best score.
+- If both players have the same score, it's a tie.
 ## Score:
 
 - Planting a bomb costs five points.

@@ -407,7 +407,8 @@ window.addEventListener('load', function() {
                 this.walls = [];
                 this.nbBrownWall = 40;
                 this.bombs = [];
-                this.gameOver = false
+                this.gameOver = false;
+                this.timer = 30000;
             }
 
             update(deltaTime) {
@@ -428,6 +429,21 @@ window.addEventListener('load', function() {
 
                     this.walls = this.walls.filter(wall => !wall.markeForDeletion);
                     this.bombs = this.bombs.filter(bomb => !bomb.markeForDeletion);
+
+                    // timer
+                    if(this.walls.length == 15) {
+                        if(this.timer <= 0){
+                            this.gameOver = true;
+
+                            if(this.greenPlayer.score > this.redPlayer.score){
+                                this.greenPlayer.win = true;
+                            } else if (this.redPlayer.score > this.greenPlayer.score){
+                                this.redPlayer.win = true;
+                            }
+                        }
+
+                        this.timer -= deltaTime;
+                    }
 
                     if(this.greenPlayer.score < 0) {
                         this.redPlayer.win = true;
@@ -458,6 +474,25 @@ window.addEventListener('load', function() {
                 this.greenPlayer.draw(context);
                 this.redPlayer.draw(context);
 
+                // timer
+                if(this.walls.length == 15) {
+                    context.save();
+                    context.shadowOffsetX = 1;
+                    context.shadowOffsetY = 1;
+                    context.shadowColor = 'black';
+                    context.textAlign = 'center';
+                    context.font = '50px sans-serif';
+                    context.fillStyle = 'black'
+
+                    if(this.timer < -1) {
+                        this.timer = -1;
+                    }
+
+                    context.fillText('Temps restant: ' + (Math.floor(this.timer / 1000) + 1), this.width / 2, this.border.horizontal + 50);
+                    context.restore();
+                }
+
+                // game over messages
                 if(this.gameOver){
                     context.save();
                     context.shadowOffsetX = 2;
@@ -469,9 +504,12 @@ window.addEventListener('load', function() {
                     if(this.greenPlayer.win){
                         context.fillStyle = 'green';
                         context.fillText('VICTOIRE DU JOUEUR VERT', this.width / 2, this.height / 2);
-                    } else {
+                    } else if (this.redPlayer.win){
                         context.fillStyle = 'red';
                         context.fillText('VICTOIRE DU JOUEUR ROUGE', this.width / 2, this.height / 2);
+                    } else {
+                        context.fillStyle = 'grey';
+                        context.fillText('EGALITÉ', this.width / 2, this.height / 2);
                     }
 
                     context.restore();
