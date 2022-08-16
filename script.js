@@ -312,8 +312,7 @@ window.addEventListener('load', function() {
 
             draw(context){
                 if(this.color == 'brown'){
-                    context.fillStyle = this.color;
-                    context.fillRect(this.x, this.y, this.width, this.height);
+                    context.drawImage(this.image, this.x, this.y)
                 }
             }
         }
@@ -333,6 +332,7 @@ window.addEventListener('load', function() {
                 this.x = x;
                 this.y = y
                 this.color = 'brown';
+                this.image = document.getElementById('brownWall');
                 this.markeForDeletion = false;
             }
         }
