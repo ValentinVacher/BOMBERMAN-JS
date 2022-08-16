@@ -64,3 +64,6 @@ canvas{
         background-size: 2560px;
     }
 }
+#map {
+    display: none;
+}

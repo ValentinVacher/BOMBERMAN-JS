@@ -13,7 +13,6 @@ Click __[her](https://valentinvacher.github.io/BOMBERMAN-JS/)__ to play.
 - Orange rectangle = explosion
 - Little yellow rectangle = bomb remaining
 - Grey rectangle = indestructible wall
-- Brown rectangle = random indestructible wall
 ## Rules:
 
 - A bomb explodes after 2.5 seconds.

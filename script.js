@@ -311,8 +311,10 @@ window.addEventListener('load', function() {
             }
 
             draw(context){
-                context.fillStyle = this.color;
-                context.fillRect(this.x, this.y, this.width, this.height);
+                if(this.color == 'brown'){
+                    context.fillStyle = this.color;
+                    context.fillRect(this.x, this.y, this.width, this.height);
+                }
             }
         }
 
@@ -336,7 +338,18 @@ window.addEventListener('load', function() {
         }
 
         class Background {
-
+            constructor(game) {
+                this.game = game;
+                this.width = this.game.width;
+                this.height = this.game.width;
+                this.x = 0;
+                this.y = 0;
+                this.image = document.getElementById('map');
+            }
+            
+            draw(context) {
+                context.drawImage(this.image, this.x, this.y)
+            }
         }
 
         class Border {
@@ -345,14 +358,6 @@ window.addEventListener('load', function() {
                 this.vertical = 135;
                 this.horizontal = 15;
             }
-
-            draw(context) {
-                context.fillStyle = "black";
-                context.fillRect(0, 0, this.vertical, this.game.height);
-                context.fillRect(this.game.width - this.vertical, 0, this.vertical, this.game.height);
-                context.fillRect(0, 0, this.game.width, this.horizontal);
-                context.fillRect(0, this.game.height - this.horizontal, this.game.width, this.horizontal);
-            };
         }
 
         class UI {
@@ -399,6 +404,7 @@ window.addEventListener('load', function() {
             constructor(width, height) {
                 this.width = width;
                 this.height = height;
+                this.background = new Background(this);
                 this.border = new Border(this);
                 this.greenPlayer = new Player(this, this.border.vertical, this.border.horizontal, 'z', 's', 'q', 'd', ' ', 'green');
                 this.redPlayer = new Player(this, this.width - this.border.vertical - 120, this.height - this.border.horizontal - 130, 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', '0', 'red')
@@ -464,7 +470,7 @@ window.addEventListener('load', function() {
             }
 
             draw(context) {
-                this.border.draw(context);
+                this.background.draw(context);
                 this.walls.forEach(wall => {
                     wall.draw(context);
                 });
