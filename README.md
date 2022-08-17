@@ -9,9 +9,7 @@ Click __[her](https://valentinvacher.github.io/BOMBERMAN-JS/)__ to play.
 
 - Green rectangle = player one
 - Red rectangle = player two
-- Yellow rectangle = bomb
 - Orange rectangle = explosion
-- Little yellow rectangle = bomb remaining
 - Grey rectangle = indestructible wall
 ## Rules:
 

@@ -111,6 +111,7 @@ window.addEventListener('load', function() {
                 this.duration = 3000;
                 this.tangible = false;
                 this.destroyedWall = 0;
+                this.image = document.getElementById('bomb')
             }
 
             update(deltaTime) {
@@ -145,8 +146,7 @@ window.addEventListener('load', function() {
             draw(context) {
                 if(this.timer < this.explosionTime &&
                     !this.explosion) {
-                    context.fillStyle = 'yellow';
-                    context.fillRect(this.x, this.y, this.width, this.height);
+                        context.drawImage(this.image, this.x, this.y , 150, 150);
                     } else{
                         this.explosions.forEach(explosion => {
                             explosion.draw(context);
@@ -366,6 +366,7 @@ window.addEventListener('load', function() {
                 this.player = player;
                 this.fontSize = 25;
                 this.fontFamily = 'sans-serif';
+                this.bomb = document.getElementById('bomb')
             }
 
             draw(context){
@@ -388,12 +389,11 @@ window.addEventListener('load', function() {
                 context.fillText('Score: ' + this.player.score, x, y);
 
                 // bomb
-                context.shadowOffsetX = 2;
-                context.shadowOffsetY = 2;
+                context.shadowOffsetX = 1;
+                context.shadowOffsetY = 1;
                 context.shadowColor = 'black';
-                context.fillStyle = "yellow";
                 for (let i = 0; i < this.player.maxBomb; i++){
-                    context.fillRect(x + 60 * i, y + 5, 50, 50);
+                    context.drawImage(this.bomb, x + 60 * i, y + 5, 50, 50);
                 }
 
                 context.restore();
