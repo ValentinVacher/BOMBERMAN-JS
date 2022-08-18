@@ -7,8 +7,6 @@ My goal is to redo my __[Bomberman game](https://github.com/ValentinVacher/BOMBE
 Click __[her](https://valentinvacher.github.io/BOMBERMAN-JS/)__ to play.
 ## symbols signification:
 
-- Green rectangle = player one
-- Red rectangle = player two
 - Orange rectangle = explosion
 - Grey rectangle = indestructible wall
 ## Rules:
