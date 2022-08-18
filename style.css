@@ -64,6 +64,6 @@ canvas{
         background-size: 2560px;
     }
 }
-#map, #brownWall, #bomb {
+#map, #brownWall, #bomb, #greenLink, #redLink {
     display: none;
 }

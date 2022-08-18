@@ -160,12 +160,15 @@ window.addEventListener('load', function() {
         }
 
         class Player {
-            constructor(game, x, y, up, down, left, right, inputBomb, color) {
+            constructor(game, x, y, up, down, left, right, inputBomb, color, image) {
                 this.game = game;
                 this.width = 120;
                 this.height = 130;
                 this.x = x;
                 this.y = y;
+                this.frameX = 0;
+                this.frameY = 0;
+                this.maxFrame = 50;
                 this.speedX = 0;
                 this.speedY = 0;
                 this.maxSpeed = 10;
@@ -180,19 +183,32 @@ window.addEventListener('load', function() {
                 this.ui = new UI(this.game, this);
                 this.win = false;
                 this.killedBy;
+                this.image = document.getElementById(image);
+                this.lastInput;
             }
 
             update(deltaTime) {
+                // link moves
                 if(this.game.keys.includes(this.up) && this.game.keys.includes(this.down)) {
                     this.speedY = 0;
-                } else if(this.game.keys.includes(this.up) && this.y > this.game.border.horizontal){
-                    this.speedY = -this.maxSpeed;
+                } else if(this.game.keys.includes(this.up)){
+                    this.frameY = 6;
+                    this.lastInput = this.up;
 
-                     while(this.y + this.speedY < this.game.border.horizontal) {
+                    if(this.y > this.game.border.horizontal){
+                        this.speedY = -this.maxSpeed;
+                    }
+
+                    while(this.y + this.speedY < this.game.border.horizontal) {
                         this.speedY++;
                     }
-                } else if(this.game.keys.includes(this.down) && this.y + this.height < this.game.height - this.game.border.horizontal){
-                    this.speedY = this.maxSpeed;
+                } else if(this.game.keys.includes(this.down)){
+                    this.frameY = 4;
+                    this.lastInput = this.down;
+
+                    if(this.y + this.height < this.game.height - this.game.border.horizontal){
+                        this.speedY = this.maxSpeed;
+                    }
 
                     while(this.y + this.height + this.speedY > this.game.height - this.game.border.horizontal) {
                         this.speedY--;
@@ -202,15 +218,25 @@ window.addEventListener('load', function() {
                 }
 
                 if(this.game.keys.includes(this.left) && this.game.keys.includes(this.right)) {
-                        this.speedX = 0;
-                } else if(  this.game.keys.includes(this.left) && this.x > this.game.border.vertical){
-                    this.speedX = -this.maxSpeed;
+                    this.speedX = 0;
+                } else if(  this.game.keys.includes(this.left)){
+                    this.frameY = 5;
+                    this.lastInput = this.left;
+
+                    if(this.x > this.game.border.vertical){
+                        this.speedX = -this.maxSpeed;            
+                    }
 
                     while(this.x + this.speedX < this.game.border.vertical) {
                         this.speedX++;
                     }
-                } else if(  this.game.keys.includes(this.right) && this.x + this.width < this.game.width - this.game.border.vertical){
-                    this.speedX = this.maxSpeed;
+                } else if(this.game.keys.includes(this.right)){
+                    this.frameY = 7;
+                    this.lastInput = this.right;
+
+                    if(this.x + this.width < this.game.width - this.game.border.vertical){
+                        this.speedX = this.maxSpeed;
+                    }
 
                     while(this.x + this.width + this.speedX > this.game.width - this.game.border.vertical) {
                         this.speedX--;
@@ -236,6 +262,7 @@ window.addEventListener('load', function() {
 
                     if(collisionX) {
                         this.x -= this.speedX;
+                        this.speedX = 0;
                     }
                 }
 
@@ -247,15 +274,46 @@ window.addEventListener('load', function() {
 
                     if(collisionY) {
                         this.y -= this.speedY;
+                        this.speedY = 0;
                     }
                 }
 
+                // animation
+                if(this.speedX === 0 && this.speedY === 0){
+                    switch(this.lastInput){
+                        case this.up :
+                            this.frameY = 2;
+                            break;
+
+                        case this.down :
+                            this.frameY = 0;
+                            break;
+                        
+                        case this.left :
+                            this.frameY = 1;
+                            break;
+
+                        case this.right :
+                            this.frameY = 3;
+                            break;
+                        
+                        default :
+                            this.frameY = 0;
+                    }
+                }
+
+                if(this.frameY > 3 && this.frameX < this.maxFrame - 5){
+                    this.frameX++;
+                } else{
+                    this.frameX = 0;
+                }
+
+                // increase bomb timer
                 this.maxBombTimer += deltaTime;
             }
 
             draw(context){
-                context.fillStyle = this.color;
-                context.fillRect(this.x, this.y, this.width, this.height);
+                context.drawImage(this.image, Math.floor(this.frameX / 5) * this.width, this.frameY * this.height, this.width, this.height, this.x, this.y, this.width, this.height);
                 this.ui.draw(context)
             }
 
@@ -406,8 +464,8 @@ window.addEventListener('load', function() {
                 this.height = height;
                 this.background = new Background(this);
                 this.border = new Border(this);
-                this.greenPlayer = new Player(this, this.border.vertical, this.border.horizontal, 'z', 's', 'q', 'd', ' ', 'green');
-                this.redPlayer = new Player(this, this.width - this.border.vertical - 120, this.height - this.border.horizontal - 130, 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', '0', 'red')
+                this.greenPlayer = new Player(this, this.border.vertical, this.border.horizontal, 'z', 's', 'q', 'd', ' ', 'green', 'greenLink');
+                this.redPlayer = new Player(this, this.width - this.border.vertical - 120, this.height - this.border.horizontal - 130, 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', '0', 'red', 'redLink');
                 this.input = new InputHandler(this);
                 this.keys = [];
                 this.walls = [];
