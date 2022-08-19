@@ -112,6 +112,7 @@ window.addEventListener('load', function() {
                 this.tangible = false;
                 this.destroyedWall = 0;
                 this.image = document.getElementById('bomb')
+                this.reset = false;
             }
 
             update(deltaTime) {
@@ -346,10 +347,9 @@ window.addEventListener('load', function() {
                     let setBomb = true;
 
                     this.game.bombs.forEach(bomb  => {
-                        if( x === bomb. x &&
-                            y === bomb.y){
-                                setBomb = false;
-                            }
+                        if( x === bomb. x && y === bomb.y){
+                            setBomb = false;
+                        }
                     })
 
                     if(setBomb){
@@ -483,8 +483,12 @@ window.addEventListener('load', function() {
                     // handle bomb
                     this.bombs.forEach(bomb => {
                         bomb.update(deltaTime);
-                        if(bomb.markeForDeletion === true){
+                        if(bomb.timer >= 2500 && !bomb.reset){
                             bomb.player.maxBomb++;
+                            bomb.reset = true;
+                        }
+
+                        if(bomb.markeForDeletion === true){
                             for(let i = 1; i <= bomb.destroyedWall; i++){
                                 bomb.player.score += i * 10
                             }
