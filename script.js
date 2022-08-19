@@ -139,6 +139,7 @@ window.addEventListener('load', function() {
                 this.player = player;
                 this.x = x;
                 this.y = y;
+                this.frameX = 0;
                 this.width = 150;
                 this.height = 150;
                 this.markeForDeletion = false;
@@ -184,12 +185,32 @@ window.addEventListener('load', function() {
                     !this.game.checkCollision(this, this.game.redPlayer)){
                         this.tangible = true;
                     }
+
+                let frame = 1
+                
+                for(let i = 1500; i < 2500; i += 200){
+                    if(this.timer > i){
+                        this.frameX = frame;
+
+                        if(frame === 1){
+                            frame = 0;
+                        } else {
+                            frame = 1;
+                        }
+    
+                        if(i >= 1900){
+                            i -= 100;
+                        }
+                    } else{
+                        break;
+                    }
+                }
             }
 
             draw(context) {
                 if(this.timer < this.explosionTime &&
                     !this.explosion) {
-                        context.drawImage(this.image, this.x, this.y , 150, 150);
+                        context.drawImage(this.image, this.frameX * 238, 0, 238, 250,this.x, this.y , 150, 150);
                     } else{
                         this.explosions.forEach(explosion => {
                             explosion.draw(context);
@@ -493,7 +514,7 @@ window.addEventListener('load', function() {
                 context.shadowOffsetY = 1;
                 context.shadowColor = 'black';
                 for (let i = 0; i < this.player.maxBomb; i++){
-                    context.drawImage(this.bomb, x + 60 * i, y + 5, 50, 50);
+                    context.drawImage(this.bomb, 0, 0, 238, 250, x + 60 * i, y + 5, 50, 50);
                 }
 
                 context.restore();
