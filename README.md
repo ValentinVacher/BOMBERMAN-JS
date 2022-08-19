@@ -5,9 +5,6 @@ My goal is to redo my __[Bomberman game](https://github.com/ValentinVacher/BOMBE
 ## Play:
 
 Click __[her](https://valentinvacher.github.io/BOMBERMAN-JS/)__ to play.
-## symbols signification:
-
-- Orange rectangle = explosion
 ## Rules:
 
 - A bomb explodes after 2.5 seconds.
