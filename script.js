@@ -42,56 +42,94 @@ window.addEventListener('load', function() {
         }
 
         class Explosion {
-            constructor(game, bomb, x, y){
+            constructor(game, bomb, x, y, frameY, orientation){
                 this.game = game;
                 this.bomb = bomb;
                 this.x = x;
                 this.y = y;
+                this.frameX = 0;
+                this.frameY = frameY;
                 this.width = 150;
                 this.height = 150;
                 this.markeForDeletion = false;
+                this.orientation = orientation;
+                this.image = document.getElementById('explosion');
+                this.position = false;
             }
 
             update(){
-                if( this.x < this.game.border.vertical ||
-                    this.x == this.game.width - this.game.border.vertical ||
-                    this.y < this.game.border.horizontal ||
-                    this.y == this.game.height - this.game.border.horizontal){
-                        this.markeForDeletion = true;
-                    }
-
-                this.game.walls.forEach(wall => {
-                    if(this.game.checkCollision(this, wall)){
-                        if(wall.color === 'grey') {
+                if(!this.position){
+                    if( this.x < this.game.border.vertical ||
+                        this.x == this.game.width - this.game.border.vertical ||
+                        this.y < this.game.border.horizontal ||
+                        this.y == this.game.height - this.game.border.horizontal){
                             this.markeForDeletion = true;
-                        } else{
-                            wall.markeForDeletion = true;
-                            this.bomb.destroyedWall++;
-                        }       
+                        }
+    
+                    this.game.walls.forEach(wall => {
+                        if(this.game.checkCollision(this, wall)){
+                            if(wall.color === 'grey') {
+                                this.markeForDeletion = true;
+                            } else{
+                                wall.markeForDeletion = true;
+                                this.bomb.destroyedWall++;
+                            }       
+                        }
+                    });
+    
+                    this.game.bombs.forEach(bomb => {
+                        if(this.game.checkCollision(this, bomb)) {
+                            bomb.timer = 2500;
+                        }
+                    });
+    
+                    if(this.game.checkCollision(this, this.game.greenPlayer)){
+                        this.game.redPlayer.win = true;
+                        this.game.redPlayer.killedBy = this.bomb.player;
+                        this.game.gameOver = true;
                     }
-                });
 
-                this.game.bombs.forEach(bomb => {
-                    if(this.game.checkCollision(this, bomb)) {
-                        bomb.timer = 2500;
-                    }
-                });
-
-                if(this.game.checkCollision(this, this.game.greenPlayer)){
-                    this.game.redPlayer.win = true;
-                    this.game.redPlayer.killedBy = this.bomb.player;
-                    this.game.gameOver = true;
+                    if(this.game.checkCollision(this, this.game.redPlayer)) {
+                        this.game.greenPlayer.win = true;
+                        this.game.greenPlayer.killedBy = this.bomb.player;
+                        this.game.gameOver = true;
+                    }  
+                    
+                    this.position = true
                 }
-                if(this.game.checkCollision(this, this.game.redPlayer)) {
-                    this.game.greenPlayer.win = true;
-                    this.game.greenPlayer.killedBy = this.bomb.player;
-                    this.game.gameOver = true;
-                }   
+                
+                if(this.frameX < 35){
+                    this.frameX++;
+                }
             }
 
             draw(context){
-                context.fillStyle = 'orange';
-                context.fillRect(this.x, this.y, this.width, this.height);
+                context.save();
+
+               switch(this.orientation) {
+                    case 'up':
+                        context.translate(this.x + 75, this.y + 75);
+                        context.rotate(-Math.PI / 2);
+                        context.translate(-this.x - 75, -this.y - 75);
+                        break;
+
+                    case 'down':
+                        context.translate(this.x + 75, this.y + 75);
+                        context.rotate(Math.PI / 2);
+                        context.translate(-this.x - 75, -this.y - 75);
+                        break;
+
+                    case 'left':
+                        context.translate(this.x + 75, this.y + 75);
+                        context.rotate(Math.PI);
+                        context.translate(-this.x - 75, -this.y - 75);
+                        break
+                    
+                    default : 
+                        break;
+                }
+                context.drawImage(this.image, Math.floor(this.frameX / 5) * 48, this.frameY * 48, 48, 48, this.x, this.y, this.width, this.height);
+                context.restore();
             }
         }
 
@@ -119,17 +157,21 @@ window.addEventListener('load', function() {
                 if( this.timer >= this.explosionTime &&
                     !this.explosion){
                         this.explosion = true;
-                        this.explosions.push(   new Explosion(this.game, this, this.x, this.y), 
-                                                new Explosion(this.game, this, this.x + 150, this.y), 
-                                                new Explosion(this.game, this, this.x - 150, this.y), 
-                                                new Explosion(this.game, this, this.x, this.y + 150), 
-                                                new Explosion(this.game, this, this.x, this.y - 150));
+                        this.explosions.push(   new Explosion(this.game, this, this.x, this.y, 0, 'center'), 
+                                                new Explosion(this.game, this, this.x + 150, this.y, 2, 'right'), 
+                                                new Explosion(this.game, this, this.x - 150, this.y, 2, 'left'), 
+                                                new Explosion(this.game, this, this.x, this.y + 150, 2, 'down'), 
+                                                new Explosion(this.game, this, this.x, this.y - 150, 2, 'up'));
 
                         this.explosions.forEach(explosion => {
                             explosion.update();
                         });
                         this.explosions = this.explosions.filter(explosion => !explosion.markeForDeletion);
                     }
+
+                this.explosions.forEach(explosion => {
+                    explosion.update();
+                });
 
                 if(this.timer >= this.duration){
                     this.markeForDeletion = true;

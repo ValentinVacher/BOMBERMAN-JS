@@ -11,7 +11,6 @@ Click __[her](https://valentinvacher.github.io/BOMBERMAN-JS/)__ to play.
 ## Rules:
 
 - A bomb explodes after 2.5 seconds.
-- A explosion remains 0.5 seconds.
 - A bomb can detonate another.
 - There cannot be more than five bombs.
 - Bombs reset when they explode.
