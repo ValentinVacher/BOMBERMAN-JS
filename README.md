@@ -4,7 +4,7 @@
 My goal is to redo my __[Bomberman game](https://github.com/ValentinVacher/BOMBERMAN.git)__ with the JavaScript language.
 ## Play:
 
-Click __[her]([https://valentinvacher.github.io/BOMBERMAN-JS/](https://valentin-vacher.000webhostapp.com/pages/bomberman.html))__ to play.
+Click __[her](https://valentin-vacher.000webhostapp.com/pages/bomberman.html/)__ to play.
 ## Rules:
 
 - A bomb explodes after 2.5 seconds.
