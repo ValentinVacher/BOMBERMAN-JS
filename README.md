@@ -4,8 +4,8 @@
 My goal is to redo my __[Bomberman game](https://github.com/ValentinVacher/BOMBERMAN.git)__ with the JavaScript language.
 ## Language:
 
-- __[Français](##FR)__
-- __[English](##EN)__
+- __[Français](#FR)__
+- __[English](#EN)__
 ## FR:
 
 ### Jouer:
