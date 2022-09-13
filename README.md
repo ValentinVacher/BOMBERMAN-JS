@@ -47,13 +47,8 @@ Cliquez __[ici](https://valentinvacher.github.io/BOMBERMAN-JS/)__ pour jouer.
 
 ### Play:
 
-<<<<<<< HEAD
 Click __[her](https://valentinvacher.github.io/BOMBERMAN-JS/)__ to play.
 ### Rules:
-=======
-Click __[her](https://valentin-vacher.000webhostapp.com/pages/bomberman.html)__ to play.
-## Rules:
->>>>>>> 6db324e513770110cd511b3dfe08ebf2b065c6fa
 
 - The bombs explodes after 2.5 seconds.
 - The bombs can detonate another.
@@ -82,10 +77,5 @@ Click __[her](https://valentin-vacher.000webhostapp.com/pages/bomberman.html)__ 
 
 - ZQSD : move the player one
 - SPACBAR : make a bomb appear under the player one
-<<<<<<< HEAD
 - DIRECTIONNAL ARROW : move the player two
 - CONTROL : make a bomb appear under the player two
-=======
-- DIRECTIONNAL ARROW : move th plater two
-- CONTROL : make a bomb appear under the player two
->>>>>>> 6db324e513770110cd511b3dfe08ebf2b065c6fa
