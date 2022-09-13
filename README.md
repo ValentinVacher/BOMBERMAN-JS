@@ -10,7 +10,7 @@
 Mon but est de refaire mon __[Bomberman game](https://github.com/ValentinVacher/BOMBERMAN.git)__ avec du JavaScript.
 ### Jouer:
 
-Cliquez __[ici](https://valentinvacher.github.io/BOMBERMAN-JS/)__ pour jouer.
+Cliquez __[ici](https://valentin-vacher.fr/pages/bomberman.html)__ pour jouer.
 ### Règle:
 
 - Les bombes explose apres 2.5 seconds.
@@ -48,7 +48,7 @@ Cliquez __[ici](https://valentinvacher.github.io/BOMBERMAN-JS/)__ pour jouer.
 My goal is to redo my __[Bomberman game](https://github.com/ValentinVacher/BOMBERMAN.git)__ with the JavaScript language.
 ### Play:
 
-Click __[her](https://valentinvacher.github.io/BOMBERMAN-JS/)__ to play.
+Click __[her](https://valentin-vacher.fr/pages/bomberman.html)__ to play.
 ### Rules:
 
 - The bombs explodes after 2.5 seconds.
