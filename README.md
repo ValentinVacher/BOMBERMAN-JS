@@ -1,13 +1,13 @@
 
 # BOMBERMAN JS
 
-My goal is to redo my __[Bomberman game](https://github.com/ValentinVacher/BOMBERMAN.git)__ with the JavaScript language.
 ## Language:
 
 - __[Français](#FR)__
 - __[English](#EN)__
 ## FR:
 
+Mon but est de refaire mon __[Bomberman game](https://github.com/ValentinVacher/BOMBERMAN.git)__ avec du JavaScript.
 ### Jouer:
 
 Cliquez __[ici](https://valentinvacher.github.io/BOMBERMAN-JS/)__ pour jouer.
@@ -45,6 +45,7 @@ Cliquez __[ici](https://valentinvacher.github.io/BOMBERMAN-JS/)__ pour jouer.
 - CONTROL : faire apparaître une bombe sous le joueur deux
 ## EN:
 
+My goal is to redo my __[Bomberman game](https://github.com/ValentinVacher/BOMBERMAN.git)__ with the JavaScript language.
 ### Play:
 
 Click __[her](https://valentinvacher.github.io/BOMBERMAN-JS/)__ to play.
